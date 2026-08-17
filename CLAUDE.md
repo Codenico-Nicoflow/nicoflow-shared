@@ -59,9 +59,15 @@ pnpm test:watch
 
 See `README.md` for the pnpm-override workflow (NIC-1941) that lets `nicoflow-frontend` pick up local edits here without a publish step.
 
-## Releasing
+## Releasing — never skip `pnpm changeset`
 
-Changesets. `pnpm changeset` on any PR that changes published behavior. Merging to `main` triggers `.github/workflows/release.yml`, which opens/updates a "Version Packages" PR and publishes to npm once that PR merges.
+⚠️ **Before opening any PR against this repo that changes anything under `src/`, run `pnpm changeset` and commit the file it writes into `.changeset/`.** This is not optional and easy to forget because nothing fails loudly if you skip it — the PR merges fine, CI stays green, and the change just silently never gets released. There is no other signal. If in doubt whether a change "counts," run it anyway (docs-only/CI-only changes are the only exception).
+
+Changesets drives versioning — nobody hand-edits `package.json`'s `version` field. Flow:
+1. `pnpm changeset` → answer 3 prompts (which package — always `@nicoflow/shared`, bump type patch/minor/major, one-line summary). Commit the generated `.changeset/*.md` file with your code changes.
+2. PR → `staging` → `main` as normal.
+3. Merging to `main` triggers `.github/workflows/release.yml`: Changesets sees the accumulated changeset file(s) and opens/updates a "Version Packages" PR (bumps the version, writes `CHANGELOG.md`, deletes the consumed changeset files) — it does **not** publish yet.
+4. Merging *that* bot PR into `main` is what actually runs `pnpm release` (`changeset publish`) to npm.
 
 ## Branching
 
