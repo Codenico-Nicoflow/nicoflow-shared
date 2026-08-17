@@ -71,3 +71,9 @@ export type ChangePasswordRequest = {
   newPassword: string;
   confirmPassword: string;
 };
+
+// Omit on platforms where the refresh token travels as an HttpOnly cookie (web).
+// Platforms with no cookie jar (React Native) pass it explicitly.
+export type RefreshTokenRequest = {
+  refreshToken: string;
+};

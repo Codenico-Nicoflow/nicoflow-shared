@@ -10,6 +10,7 @@ import type {
   ChangePasswordRequest,
   ForgotPasswordRequest,
   LoginRequest,
+  RefreshTokenRequest,
   RegisterRequest,
   ResendVerificationRequest,
   ResetPasswordRequest,
@@ -180,10 +181,15 @@ export const createAuthApi = (baseQuery: ApiBaseQuery, actions: AuthActions, res
         },
         invalidatesTags: ['User'],
       }),
-      refreshToken: builder.mutation<AuthResponse, void>({
-        query: () => ({
+      // On web the refresh token is an HttpOnly cookie the browser attaches
+      // automatically — `refreshToken` arg is omitted. Platforms with no cookie
+      // jar (React Native) pass it explicitly; the backend reads the cookie
+      // first and falls back to this body field (see nicoflow-api SPEC §3).
+      refreshToken: builder.mutation<AuthResponse, RefreshTokenRequest | void>({
+        query: body => ({
           url: AUTH_API.REFRESH_TOKEN,
           method: 'POST',
+          ...(body?.refreshToken ? { body: { refreshToken: body.refreshToken } } : {}),
           credentials: 'include',
         }),
         transformResponse: (raw: ApiEnvelope<AuthResponse>) => raw.data,
