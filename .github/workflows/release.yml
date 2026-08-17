@@ -9,7 +9,6 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 permissions:
   contents: write
   pull-requests: write
-  packages: write
 
 jobs:
   release:
@@ -23,25 +22,16 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
-          registry-url: https://npm.pkg.github.com
-          scope: '@nicoflow'
+          registry-url: https://registry.npmjs.org
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         run: pnpm build
       # Either opens/updates a "Version Packages" PR (unreleased changesets
       # exist) or, when that PR was just merged, runs `pnpm release` to
-      # publish the new version(s) to GitHub Packages. GITHUB_TOKEN drives
-      # the PR/git operations; the actual registry PUT needs a PAT with
-      # write:packages — GITHUB_TOKEN's automatic Packages grant isn't wired
-      # up for this org (confirmed via a live 403 "installation does not
-      # exist" on the first release attempt). changesets/action specifically
-      # checks for an env var literally named NPM_TOKEN to decide whether to
-      # write npm registry auth at all ("No NPM_TOKEN or OIDC available"
-      # skipped auth setup entirely when only NODE_AUTH_TOKEN was set) — both
-      # names must be set to the same secret.
+      # publish the new version(s) to npm. GITHUB_TOKEN drives the
+      # PR/git operations; NPM_TOKEN (an npm access token, not a GitHub
+      # PAT) drives the actual `npm publish` auth.
       - name: Version or publish
         uses: changesets/action@v1
         with:

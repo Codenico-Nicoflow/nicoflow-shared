@@ -2,7 +2,7 @@
 
 Shared types, RTK Query API slices, Zod validation schemas, i18n locale strings, platform adapters, and framework-agnostic pure utils for the Nicoflow web app and future mobile app.
 
-Published to GitHub Packages (private, scoped to `@nicoflow`) — not public npm, since this package carries internal API contract shapes.
+Published to the public npm registry under the `@nicoflow` scope. GitHub Packages was the original plan but hit an unresolved org-level publish permission issue (`403 create_package` / "installation does not exist" regardless of token type); switched to npm to unblock. The package is readable by anyone, but the `@nicoflow` scope is owned by this account — only an authorized publisher can push a new version. Contents are client-side type/schema/API-shape code with no secrets, so public readability is an accepted tradeoff. Can move to a paid private npm plan later without republishing (`npm access set status=restricted`).
 
 ## Subpaths
 
@@ -44,7 +44,7 @@ This repo uses [Changesets](https://github.com/changesets/changesets). Every PR 
 pnpm changeset
 ```
 
-Merging to `main` opens (or updates) a "Version Packages" PR; merging that PR publishes the new version to GitHub Packages automatically via `.github/workflows/release.yml`.
+Merging to `main` opens (or updates) a "Version Packages" PR; merging that PR publishes the new version to npm automatically via `.github/workflows/release.yml`.
 
 ## Branching
 
