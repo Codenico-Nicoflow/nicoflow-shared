@@ -31,6 +31,54 @@ const makeStore = () => {
   return { store, authApi };
 };
 
+describe('authApi.login / register platform', () => {
+  it('defaults platform to "web" when the caller omits it', async () => {
+    let body: unknown;
+    server.use(
+      http.post(`${API}/auth/login`, async ({ request }) => {
+        body = await request.json();
+        return HttpResponse.json({ data: { token: 't', refreshToken: 'r', user: makeUser() }, error: null });
+      })
+    );
+
+    const { store, authApi } = makeStore();
+    await store.dispatch(authApi.endpoints.login.initiate({ identifier: 'nico', password: 'pw', remember: false }));
+
+    expect(body).toEqual(expect.objectContaining({ platform: 'web' }));
+  });
+
+  it('passes platform: "mobile" through when the caller specifies it', async () => {
+    let loginBody: unknown;
+    let registerBody: unknown;
+    server.use(
+      http.post(`${API}/auth/login`, async ({ request }) => {
+        loginBody = await request.json();
+        return HttpResponse.json({ data: { token: 't', refreshToken: 'r', user: makeUser() }, error: null });
+      }),
+      http.post(`${API}/auth/register`, async ({ request }) => {
+        registerBody = await request.json();
+        return HttpResponse.json({ data: { token: 't', refreshToken: 'r', user: makeUser() }, error: null });
+      })
+    );
+
+    const { store, authApi } = makeStore();
+    await store.dispatch(
+      authApi.endpoints.login.initiate({ identifier: 'nico', password: 'pw', remember: false, platform: 'mobile' })
+    );
+    await store.dispatch(
+      authApi.endpoints.register.initiate({
+        email: 'nico@example.com',
+        password: 'pw',
+        username: 'nico',
+        platform: 'mobile',
+      })
+    );
+
+    expect(loginBody).toEqual(expect.objectContaining({ platform: 'mobile' }));
+    expect(registerBody).toEqual(expect.objectContaining({ platform: 'mobile' }));
+  });
+});
+
 describe('authApi.refreshToken', () => {
   it('omits the request body when called with no args (web: cookie-based refresh)', async () => {
     let bodyText: string | undefined;

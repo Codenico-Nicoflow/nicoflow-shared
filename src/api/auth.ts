@@ -39,7 +39,7 @@ export const createAuthApi = (baseQuery: ApiBaseQuery, actions: AuthActions, res
         query: userData => ({
           url: AUTH_API.LOGIN,
           method: 'POST',
-          body: { ...userData, platform: 'web', timezone: resolveTimeZone() },
+          body: { ...userData, platform: userData.platform ?? 'web', timezone: resolveTimeZone() },
           credentials: 'include',
         }),
         transformResponse: (raw: ApiEnvelope<AuthResponse>) => raw.data,
@@ -50,7 +50,7 @@ export const createAuthApi = (baseQuery: ApiBaseQuery, actions: AuthActions, res
         query: userData => ({
           url: AUTH_API.REGISTER,
           method: 'POST',
-          body: { ...userData, platform: 'web' },
+          body: { ...userData, platform: userData.platform ?? 'web' },
           credentials: 'include',
         }),
         transformResponse: (raw: ApiEnvelope<AuthResponse>) => raw.data,
