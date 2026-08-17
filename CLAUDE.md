@@ -1,6 +1,6 @@
 # CLAUDE.md — nicoflow-shared
 
-`@nicoflow/shared` — the framework-agnostic package consumed by `nicoflow-frontend` (and, once it exists, `nicoflow-mobile`). Published to GitHub Packages (private, `@nicoflow` scope) via Changesets.
+`@nicoflow/shared` — the framework-agnostic package consumed by `nicoflow-frontend` (and, once it exists, `nicoflow-mobile`). Published to the public npm registry (`@nicoflow` scope) via Changesets — see README.md for why GitHub Packages was abandoned.
 
 > **Umbrella context:** this repo sits under `../CLAUDE.md` (the Nicoflow workspace root), which owns the cross-repo contract, the roadmap, and how this package fits into the 4-repo topology (`nicoflow-api`, `nicoflow-frontend`, `nicoflow-shared`, planned `nicoflow-mobile`). Read it first.
 
@@ -61,7 +61,7 @@ See `README.md` for the pnpm-override workflow (NIC-1941) that lets `nicoflow-fr
 
 ## Releasing
 
-Changesets. `pnpm changeset` on any PR that changes published behavior. Merging to `main` triggers `.github/workflows/release.yml`, which opens/updates a "Version Packages" PR and publishes to GitHub Packages once that PR merges.
+Changesets. `pnpm changeset` on any PR that changes published behavior. Merging to `main` triggers `.github/workflows/release.yml`, which opens/updates a "Version Packages" PR and publishes to npm once that PR merges.
 
 ## Branching
 
