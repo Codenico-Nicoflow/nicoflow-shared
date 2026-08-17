@@ -34,14 +34,19 @@ jobs:
       # Either opens/updates a "Version Packages" PR (unreleased changesets
       # exist) or, when that PR was just merged, runs `pnpm release` to
       # publish the new version(s) to GitHub Packages. GITHUB_TOKEN drives
-      # the PR/git operations; the actual registry PUT needs NPM_TOKEN (a
-      # classic PAT with write:packages) — GITHUB_TOKEN's automatic Packages
-      # grant isn't wired up for this org (confirmed via a live 403
-      # "installation does not exist" on the first release attempt).
+      # the PR/git operations; the actual registry PUT needs a PAT with
+      # write:packages — GITHUB_TOKEN's automatic Packages grant isn't wired
+      # up for this org (confirmed via a live 403 "installation does not
+      # exist" on the first release attempt). changesets/action specifically
+      # checks for an env var literally named NPM_TOKEN to decide whether to
+      # write npm registry auth at all ("No NPM_TOKEN or OIDC available"
+      # skipped auth setup entirely when only NODE_AUTH_TOKEN was set) — both
+      # names must be set to the same secret.
       - name: Version or publish
         uses: changesets/action@v1
         with:
           publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
