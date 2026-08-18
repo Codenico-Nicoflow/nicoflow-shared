@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.3.0
+
+### Minor Changes
+
+- 7694b75: Add `detectTimezoneDrift`, `zoneOffsetMinutes`, and `formatZoneOffset` to `@nicoflow/shared/utils`, moved verbatim from `nicoflow-frontend`'s `src/features/Calendar/timezoneDrift.ts` so mobile can share the same device/account-timezone drift comparison logic (NIC-1946).
+
 ## 0.2.0
 
 ### Minor Changes
