@@ -9,6 +9,7 @@ export default defineConfig({
     'api/adapters': 'src/api/adapters.ts',
     'schemas/index': 'src/schemas/index.ts',
     'i18n/index': 'src/i18n/index.ts',
+    'analytics/index': 'src/analytics/index.ts',
   },
   format: ['esm', 'cjs'],
   dts: true,
