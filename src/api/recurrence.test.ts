@@ -8,6 +8,7 @@ import type { IRecurrenceRule } from '../types';
 import { RecurrenceFreq } from '../types';
 
 import { createRecurrenceApi } from './recurrence';
+import { createTaskApi } from './tasks';
 
 const API = 'http://localhost:8080/v1';
 
@@ -35,15 +36,17 @@ const makeRule = (overrides: Partial<IRecurrenceRule> = {}): IRecurrenceRule => 
 });
 
 const makeStore = () => {
-  const recurrenceApi = createRecurrenceApi(baseQuery);
+  const taskApi = createTaskApi(baseQuery);
+  const recurrenceApi = createRecurrenceApi(baseQuery, taskApi);
   const store = configureStore({
     reducer: {
       auth: (state = { token: null }) => state,
+      [taskApi.reducerPath]: taskApi.reducer,
       [recurrenceApi.reducerPath]: recurrenceApi.reducer,
     },
-    middleware: gDM => gDM().concat(recurrenceApi.middleware),
+    middleware: gDM => gDM().concat(taskApi.middleware, recurrenceApi.middleware),
   });
-  return { store, recurrenceApi };
+  return { store, recurrenceApi, taskApi };
 };
 
 describe('recurrenceApi slice', () => {
@@ -98,6 +101,31 @@ describe('recurrenceApi slice', () => {
     expect('data' in res && res.data).toEqual(makeRule());
     expect(body).not.toHaveProperty('projectId');
     expect(body).toMatchObject({ title: 'Water the plants', freq: 'weekly', byWeekday: [1] });
+  });
+
+  it('createRecurrenceRule invalidates taskApi so the created instance shows up without a reload', async () => {
+    server.use(
+      http.post(`${API}/projects/p1/recurrence-rules`, () => HttpResponse.json({ data: makeRule(), error: null })),
+      http.get(`${API}/time-spread`, () =>
+        HttpResponse.json({ data: { today: [], tomorrow: [], thisWeek: [] }, error: null })
+      )
+    );
+
+    const { store, recurrenceApi, taskApi } = makeStore();
+    await store.dispatch(taskApi.endpoints.getTimeSpread.initiate());
+    await store.dispatch(
+      recurrenceApi.endpoints.createRecurrenceRule.initiate({
+        projectId: 'p1',
+        title: 'Water the plants',
+        freq: RecurrenceFreq.WEEKLY,
+        interval: 1,
+        byWeekday: [1],
+        startDate: '2026-03-02',
+      })
+    );
+
+    const invalidated = taskApi.util.selectInvalidatedBy(store.getState(), ['TimeSpread']);
+    expect(invalidated.length).toBeGreaterThan(0);
   });
 
   it('pauseRecurrenceRule sends the paused flag to the pause endpoint', async () => {
