@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.4.1
+
+### Patch Changes
+
+- 525b331: createRecurrenceApi now takes a taskApi instance and invalidates its Task/TimeSpread tags on create/update/pause/delete. Recurring tasks used to only refetch after a full app reload since RTK Query tags don't cross createApi instances, and recurrenceApi never actually invalidated taskApi's cache despite a stale comment claiming it did.
+
 ## 0.4.0
 
 ### Minor Changes
