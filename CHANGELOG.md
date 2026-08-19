@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.5.0
+
+### Minor Changes
+
+- 5d1d97e: Add src/utils/taskDisplay.ts: ENERGY_OPTIONS, getEnergyOption, priorityKind, resolveGentleDate, formatDuration — framework-agnostic task-row display logic, single source for web and mobile.
+
 ## 0.4.1
 
 ### Patch Changes
