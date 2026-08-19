@@ -1,6 +1,6 @@
 {
   "name": "@nicoflow/shared",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Shared types, RTK Query slices, Zod schemas, i18n locales, and pure utils for Nicoflow web and mobile.",
   "license": "UNLICENSED",
   "private": false,
