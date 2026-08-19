@@ -1,3 +1,4 @@
+import type { Dispatch, UnknownAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import type { ApiEnvelope, IRecurrenceRule } from '../types';
@@ -12,14 +13,31 @@ import type {
   RecurrenceStatsResponse,
   UpdateRecurrenceRuleRequest,
 } from './recurrence.types';
+import type { createTaskApi } from './tasks';
+
+// Tags don't cross createApi instances — the constructed taskApi is injected
+// so the task lists it owns can be invalidated directly.
+export type TaskApi = ReturnType<typeof createTaskApi>;
 
 // Recurrence rule data layer (E-050). Every mutation also changes the task rows
 // the rule owns — creating a rule materializes instance #1, editing re-stamps the
-// live instance, deleting reaps the pending one — so each invalidates 'Task' as
-// well as its own tag. 'RecurrenceStats' is separate because stats are derived
-// from occurrence rows and move when a task is completed, not only when the rule
-// itself changes.
-export const createRecurrenceApi = (baseQuery: ApiBaseQuery) => {
+// live instance, deleting reaps the pending one — so each invalidates 'Task' on
+// taskApi as well as its own tag. 'RecurrenceStats' is separate because stats
+// are derived from occurrence rows and move when a task is completed, not only
+// when the rule itself changes.
+export const createRecurrenceApi = (baseQuery: ApiBaseQuery, taskApi: TaskApi) => {
+  const refreshTasksOnSuccess = async (
+    _arg: unknown,
+    { dispatch, queryFulfilled }: { dispatch: Dispatch<UnknownAction>; queryFulfilled: Promise<unknown> }
+  ) => {
+    try {
+      await queryFulfilled;
+      dispatch(taskApi.util.invalidateTags(['Task', 'TimeSpread']));
+    } catch {
+      // mutation failed — nothing to refresh.
+    }
+  };
+
   const recurrenceApi = createApi({
     reducerPath: 'recurrenceApi',
     baseQuery,
@@ -64,6 +82,7 @@ export const createRecurrenceApi = (baseQuery: ApiBaseQuery) => {
         transformResponse: (raw: ApiEnvelope<IRecurrenceRule>) => raw.data,
         transformErrorResponse: error => error.data,
         invalidatesTags: [{ type: 'RecurrenceRule', id: 'LIST' }],
+        onQueryStarted: refreshTasksOnSuccess,
       }),
 
       updateRecurrenceRule: builder.mutation<IRecurrenceRule, UpdateRecurrenceRuleRequest>({
@@ -78,6 +97,7 @@ export const createRecurrenceApi = (baseQuery: ApiBaseQuery) => {
           { type: 'RecurrenceRule', id },
           { type: 'RecurrenceRule', id: 'LIST' },
         ],
+        onQueryStarted: refreshTasksOnSuccess,
       }),
 
       pauseRecurrenceRule: builder.mutation<IRecurrenceRule, PauseRecurrenceRuleRequest>({
@@ -92,6 +112,7 @@ export const createRecurrenceApi = (baseQuery: ApiBaseQuery) => {
           { type: 'RecurrenceRule', id },
           { type: 'RecurrenceRule', id: 'LIST' },
         ],
+        onQueryStarted: refreshTasksOnSuccess,
       }),
 
       deleteRecurrenceRule: builder.mutation<void, string>({
@@ -104,6 +125,7 @@ export const createRecurrenceApi = (baseQuery: ApiBaseQuery) => {
           { type: 'RecurrenceRule', id },
           { type: 'RecurrenceRule', id: 'LIST' },
         ],
+        onQueryStarted: refreshTasksOnSuccess,
       }),
     }),
   });
