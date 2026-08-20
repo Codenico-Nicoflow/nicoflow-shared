@@ -15,7 +15,12 @@
     "descriptionPlaceholder": "הוסיפו פרטי משימה...",
     "schedulingTitle": "תזמון",
     "rollsOverLabel": "גלגול קדימה",
-    "rollsOverDescription": "אם היום המתוכנן חולף, המשימה עוברת להיום. כשכבוי, היא יורדת מהרשימות."
+    "rollsOverDescription": "אם היום המתוכנן חולף, המשימה עוברת להיום. כשכבוי, היא יורדת מהרשימות.",
+    "projectLabel": "פרויקט",
+    "projectPlaceholder": "בחרו פרויקט",
+    "createErrorTitle": "יצירת המשימה נכשלה",
+    "saveErrorTitle": "שמירת השינויים נכשלה",
+    "genericErrorDescription": "משהו השתבש. נסו שוב."
   },
   "subtasks": {
     "title": "תת-משימות",
@@ -63,7 +68,8 @@
     "delete": "מחיקת משימה",
     "cancel": "ביטול משימה",
     "markMissed": "סימון כפוספסה",
-    "complete": "סימון {{title}} כהושלמה"
+    "complete": "סימון {{title}} כהושלמה",
+    "menuLabel": "פעולות משימה"
   },
   "status": {
     "done": "הושלם",
@@ -149,7 +155,8 @@
     "fabTaskDescription": "הוסיפו משימה לפרויקט הזה עם כותרת והגדרות ברירת מחדל.",
     "fabBucket": "הוספה מהירה לסל",
     "fabBucketDescription": "לכדו את המחשבות שלכם במהירות מכל מקום.",
-    "fabBucketPlaceholder": "מה עובר לכם בראש?"
+    "fabBucketPlaceholder": "מה עובר לכם בראש?",
+    "fabLabel": "משימה חדשה"
   },
   "focus": {
     "title": "פוקוס",

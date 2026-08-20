@@ -15,7 +15,12 @@
     "descriptionPlaceholder": "Добавьте детали задачи...",
     "schedulingTitle": "Планирование",
     "rollsOverLabel": "Переносить",
-    "rollsOverDescription": "Если запланированный день прошёл, задача переносится на Сегодня. Когда выключено, она пропадает из списков."
+    "rollsOverDescription": "Если запланированный день прошёл, задача переносится на Сегодня. Когда выключено, она пропадает из списков.",
+    "projectLabel": "Проект",
+    "projectPlaceholder": "Выберите проект",
+    "createErrorTitle": "Не удалось создать задачу",
+    "saveErrorTitle": "Не удалось сохранить изменения",
+    "genericErrorDescription": "Что-то пошло не так. Попробуйте снова."
   },
   "subtasks": {
     "title": "Подзадачи",
@@ -64,7 +69,8 @@
     "delete": "Удалить задачу",
     "cancel": "Отменить задачу",
     "markMissed": "Отметить как пропущенную",
-    "complete": "Завершить {{title}}"
+    "complete": "Завершить {{title}}",
+    "menuLabel": "Действия с задачей"
   },
   "status": {
     "done": "Готово",
@@ -150,7 +156,8 @@
     "fabTaskDescription": "Добавьте задачу в этот проект с названием и настройками по умолчанию.",
     "fabBucket": "Быстрое добавление в корзину",
     "fabBucketDescription": "Быстро фиксируйте мысли откуда угодно.",
-    "fabBucketPlaceholder": "Что у вас на уме?"
+    "fabBucketPlaceholder": "Что у вас на уме?",
+    "fabLabel": "Новая задача"
   },
   "focus": {
     "title": "Фокус",

@@ -104,7 +104,9 @@
     "scheduledTimeLabel": "Scheduled time",
     "scheduledTimeHint": "Time of day on the calendar, in 15-minute steps.",
     "scheduledTimeNeedsDate": "Pick a scheduled date first.",
-    "scheduledTimeClear": "Clear time"
+    "scheduledTimeClear": "Clear time",
+    "clearDate": "Clear date",
+    "clearUrl": "Clear URL"
   },
   "search": {
     "placeholder": "Search tasks, projects, areas…",

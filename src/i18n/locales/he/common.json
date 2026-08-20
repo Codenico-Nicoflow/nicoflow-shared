@@ -104,7 +104,9 @@
     "scheduledTimeLabel": "שעה מתוכננת",
     "scheduledTimeHint": "שעה ביום בלוח השנה, בקפיצות של 15 דקות.",
     "scheduledTimeNeedsDate": "קודם בחרו תאריך מתוכנן.",
-    "scheduledTimeClear": "ניקוי שעה"
+    "scheduledTimeClear": "ניקוי שעה",
+    "clearDate": "ניקוי תאריך",
+    "clearUrl": "ניקוי כתובת URL"
   },
   "search": {
     "placeholder": "חיפוש משימות, פרויקטים, תחומים…",

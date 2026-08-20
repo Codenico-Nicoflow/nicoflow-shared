@@ -104,7 +104,9 @@
     "scheduledTimeLabel": "Запланированное время",
     "scheduledTimeHint": "Время дня в календаре с шагом 15 минут.",
     "scheduledTimeNeedsDate": "Сначала выберите запланированную дату.",
-    "scheduledTimeClear": "Очистить время"
+    "scheduledTimeClear": "Очистить время",
+    "clearDate": "Очистить дату",
+    "clearUrl": "Очистить URL"
   },
   "search": {
     "placeholder": "Поиск задач, проектов, областей…",
