@@ -15,7 +15,8 @@
     "search": "Search…",
     "back": "Back",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "retry": "Retry"
   },
   "validation": {
     "usernameMin": "Username must be at least 3 characters",
@@ -254,5 +255,6 @@
       "s6Title": "6. Your Rights",
       "s7Title": "7. Contact Us"
     }
-  }
+  },
+  "mutationError": "Something went wrong. Please try again."
 }
