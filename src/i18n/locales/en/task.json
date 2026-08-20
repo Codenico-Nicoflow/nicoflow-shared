@@ -15,7 +15,12 @@
     "descriptionPlaceholder": "Add task details...",
     "schedulingTitle": "Scheduling",
     "rollsOverLabel": "Roll over",
-    "rollsOverDescription": "If the scheduled day passes, the task moves to Today. When off, it drops off your lists."
+    "rollsOverDescription": "If the scheduled day passes, the task moves to Today. When off, it drops off your lists.",
+    "projectLabel": "Project",
+    "projectPlaceholder": "Choose a project",
+    "createErrorTitle": "Couldn't create task",
+    "saveErrorTitle": "Couldn't save changes",
+    "genericErrorDescription": "Something went wrong. Try again."
   },
   "subtasks": {
     "title": "Subtasks",
@@ -62,7 +67,8 @@
     "delete": "Delete Task",
     "cancel": "Cancel Task",
     "markMissed": "Mark Missed",
-    "complete": "Complete {{title}}"
+    "complete": "Complete {{title}}",
+    "menuLabel": "Task actions"
   },
   "status": {
     "done": "Done",
@@ -148,7 +154,8 @@
     "fabTaskDescription": "Add a task to this project with a title and default settings.",
     "fabBucket": "Quick Add to Bucket",
     "fabBucketDescription": "Capture your thoughts quickly from anywhere.",
-    "fabBucketPlaceholder": "What's on your mind?"
+    "fabBucketPlaceholder": "What's on your mind?",
+    "fabLabel": "New task"
   },
   "focus": {
     "title": "Focus",
