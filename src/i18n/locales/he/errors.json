@@ -17,6 +17,7 @@
   "TASK_UPDATED_SUCCESSFULLY": "המשימה עודכנה בהצלחה!",
   "TASK_CREATED_SUCCESSFULLY": "המשימה נוצרה בהצלחה!",
   "TASK_DELETED_SUCCESSFULLY": "המשימה נמחקה בהצלחה!",
+  "TASK_COMPLETED": "המשימה הושלמה!",
   "AREA_CREATED": "התחום נוצר בהצלחה!",
   "AREA_UPDATED": "התחום עודכן בהצלחה!",
   "AREA_DELETED": "התחום נמחק בהצלחה!",
