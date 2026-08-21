@@ -17,6 +17,7 @@
   "TASK_UPDATED_SUCCESSFULLY": "Задача успешно обновлена!",
   "TASK_CREATED_SUCCESSFULLY": "Задача успешно создана!",
   "TASK_DELETED_SUCCESSFULLY": "Задача успешно удалена!",
+  "TASK_COMPLETED": "Задача выполнена!",
   "AREA_CREATED": "Область успешно создана!",
   "AREA_UPDATED": "Область успешно обновлена!",
   "AREA_DELETED": "Область успешно удалена!",

@@ -17,6 +17,7 @@
   "TASK_UPDATED_SUCCESSFULLY": "Task updated successfully!",
   "TASK_CREATED_SUCCESSFULLY": "Task created successfully!",
   "TASK_DELETED_SUCCESSFULLY": "Task deleted successfully!",
+  "TASK_COMPLETED": "Task completed!",
   "AREA_CREATED": "Area created successfully!",
   "AREA_UPDATED": "Area updated successfully!",
   "AREA_DELETED": "Area deleted successfully!",
