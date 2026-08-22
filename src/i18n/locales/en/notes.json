@@ -72,6 +72,19 @@
     "linkRemove": "Remove link",
     "linkOpen": "Open link",
     "tableInsert": "Insert",
-    "heading1": "Title"
+    "heading1": "Title",
+    "textColorGroup": "Text color",
+    "highlightGroup": "Highlight",
+    "colorDefault": "Default",
+    "colors": {
+      "gray": "Gray",
+      "red": "Red",
+      "orange": "Orange",
+      "amber": "Amber",
+      "green": "Green",
+      "teal": "Teal",
+      "blue": "Blue",
+      "purple": "Purple"
+    }
   }
 }

@@ -73,6 +73,19 @@
     "linkRemove": "הסרת קישור",
     "linkOpen": "פתיחת קישור",
     "tableInsert": "הוספה",
-    "heading1": "כותרת ראשית"
+    "heading1": "כותרת ראשית",
+    "textColorGroup": "צבע טקסט",
+    "highlightGroup": "הדגשה",
+    "colorDefault": "ברירת מחדל",
+    "colors": {
+      "gray": "אפור",
+      "red": "אדום",
+      "orange": "כתום",
+      "amber": "ענבר",
+      "green": "ירוק",
+      "teal": "טורקיז",
+      "blue": "כחול",
+      "purple": "סגול"
+    }
   }
 }

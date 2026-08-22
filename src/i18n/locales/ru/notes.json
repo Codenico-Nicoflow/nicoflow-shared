@@ -74,6 +74,19 @@
     "linkRemove": "Удалить ссылку",
     "linkOpen": "Открыть ссылку",
     "tableInsert": "Вставить",
-    "heading1": "Название"
+    "heading1": "Название",
+    "textColorGroup": "Цвет текста",
+    "highlightGroup": "Выделение",
+    "colorDefault": "По умолчанию",
+    "colors": {
+      "gray": "Серый",
+      "red": "Красный",
+      "orange": "Оранжевый",
+      "amber": "Янтарный",
+      "green": "Зелёный",
+      "teal": "Бирюзовый",
+      "blue": "Синий",
+      "purple": "Фиолетовый"
+    }
   }
 }
