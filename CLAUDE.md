@@ -65,4 +65,4 @@ Changesets. `pnpm changeset` on any PR that changes published behavior. Merging 
 
 ## Branching
 
-Same as every other Nicoflow repo: `<type>/NIC-<ticket>-<desc>`, branch from `staging` (or `main` for `hotfix/`), PR to `staging` first.
+**Unlike every other Nicoflow repo, this one has no `staging` branch.** Branch `<type>/NIC-<ticket>-<desc>` directly from `main`, PR straight to `main` — no `staging` intermediate. This is a deliberate deviation from the umbrella's unified branch flow: a `staging` hop added no value here (nothing "deploys to staging" for an npm package — the only real gate is the `main`-triggered release workflow), so it was removed. If you see references to a `nicoflow-shared` `staging` branch or a `staging → main` PR in old history/PRs, that's stale — the branch no longer exists.
