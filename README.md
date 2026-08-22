@@ -48,4 +48,4 @@ Merging to `main` opens (or updates) a "Version Packages" PR; merging that PR pu
 
 ## Branching
 
-Same convention as `nicoflow-api` / `nicoflow-frontend`: `<type>/NIC-<ticket>-<desc>`, `<type>` ∈ `feature | bugfix | hotfix | chore | refactor`. `feature/bugfix/chore/refactor` branch from `staging`; `hotfix` branches from `main`. Flow: branch → PR to `staging` → PR to `main` (triggers the release workflow).
+Unlike `nicoflow-api` / `nicoflow-frontend`, this repo has **no `staging` branch** — deliberately removed, since nothing "deploys to staging" for an npm package. `<type>/NIC-<ticket>-<desc>`, `<type>` ∈ `feature | bugfix | hotfix | chore | refactor`, all branch from `main`. Flow: branch → PR straight to `main` (triggers the release workflow on merge).
