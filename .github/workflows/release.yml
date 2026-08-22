@@ -33,6 +33,7 @@ jobs:
       # PR/git operations; NPM_TOKEN (an npm access token, not a GitHub
       # PAT) drives the actual `npm publish` auth.
       - name: Version or publish
+        id: changesets
         uses: changesets/action@v1
         with:
           publish: pnpm release
@@ -40,3 +41,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # The Version Packages PR is 100% mechanical (a version bump + changelog
+      # entry, no hand-written code) — auto-merge it once its own required
+      # checks pass so a release never needs a manual click. This does NOT
+      # affect ordinary feature/bugfix PRs, which still need a human to merge.
+      - name: Auto-merge the Version Packages PR
+        if: steps.changesets.outputs.pullRequestNumber
+        run: gh pr merge --auto --merge "${{ steps.changesets.outputs.pullRequestNumber }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
