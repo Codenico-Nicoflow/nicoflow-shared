@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.0
+
+### Minor Changes
+
+- 5f14072: Add `getBacklinks` query to `createNoteApi` (`GET /notes/:id/backlinks`) — powers the backlinks panel on the note page (NIC-1973), listing every note that mentions the given one.
+
 ## 0.7.0
 
 ### Minor Changes
