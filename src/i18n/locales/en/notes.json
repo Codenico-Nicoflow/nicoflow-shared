@@ -85,13 +85,14 @@
     "colorDefault": "Default",
     "colors": {
       "gray": "Gray",
-      "red": "Red",
+      "brown": "Brown",
       "orange": "Orange",
-      "amber": "Amber",
+      "yellow": "Yellow",
       "green": "Green",
-      "teal": "Teal",
       "blue": "Blue",
-      "purple": "Purple"
+      "purple": "Purple",
+      "pink": "Pink",
+      "red": "Red"
     },
     "callout": "Insert callout",
     "divider": "Insert divider"

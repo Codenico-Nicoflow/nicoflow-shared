@@ -87,13 +87,14 @@
     "colorDefault": "ברירת מחדל",
     "colors": {
       "gray": "אפור",
-      "red": "אדום",
+      "brown": "חום",
       "orange": "כתום",
-      "amber": "ענבר",
+      "yellow": "צהוב",
       "green": "ירוק",
-      "teal": "טורקיז",
       "blue": "כחול",
-      "purple": "סגול"
+      "purple": "סגול",
+      "pink": "ורוד",
+      "red": "אדום"
     },
     "callout": "הוספת תיבת הבלטה",
     "divider": "הוספת קו מפריד"
