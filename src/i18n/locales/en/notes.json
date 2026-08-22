@@ -85,6 +85,8 @@
       "teal": "Teal",
       "blue": "Blue",
       "purple": "Purple"
-    }
+    },
+    "callout": "Insert callout",
+    "divider": "Insert divider"
   }
 }
