@@ -1,7 +1,7 @@
 import type { FetchBaseQueryError, InfiniteData } from '@reduxjs/toolkit/query';
 import { createApi } from '@reduxjs/toolkit/query/react';
 
-import type { ApiEnvelope, ApiErrorBody, INoteDetail } from '../types';
+import type { ApiEnvelope, ApiErrorBody, INote, INoteDetail } from '../types';
 import { NOTE_API } from '../types';
 
 import type { ApiBaseQuery } from './area';
@@ -140,6 +140,18 @@ export const createNoteApi = (baseQuery: ApiBaseQuery) => {
           { type: 'Note', id },
           { type: 'Note', id: 'LIST' },
         ],
+      }),
+
+      // Backlinks panel (NIC-1973): every note that mentions the given id.
+      // Tagged so a mention insert/removal elsewhere can invalidate it, same
+      // pattern as the scalar note tag — refetch-on-mount is what the story
+      // asks for today (no WS event yet), the tag just makes a future one a
+      // pure additive win rather than requiring this endpoint's shape to change.
+      getBacklinks: builder.query<INote[], string>({
+        query: id => `${NOTE_API.DETAIL}${id}/backlinks`,
+        transformResponse: (raw: ApiEnvelope<INote[]>) => raw.data,
+        transformErrorResponse: toApiError,
+        providesTags: (_result, _error, id) => [{ type: 'Note', id: `backlinks-${id}` }],
       }),
 
       // @-mention typeahead (NIC-1972). Deliberately untagged: results are
