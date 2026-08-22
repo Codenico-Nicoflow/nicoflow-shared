@@ -31,6 +31,14 @@
     "count_two": "שני פתקים",
     "count_other": "{{count}} פתקים"
   },
+  "backlinks": {
+    "heading": "אזכורים מקושרים",
+    "emptyTitle": "אין עדיין פתקים שמקשרים לכאן",
+    "emptyDescription": "כשפתק אחר יאזכר את הפתק הזה עם @, הוא יופיע כאן.",
+    "count_one": "פתק מקושר אחד",
+    "count_two": "שני פתקים מקושרים",
+    "count_other": "{{count}} פתקים מקושרים"
+  },
   "save": {
     "unsaved": "שינויים שלא נשמרו",
     "saving": "שומר…",
