@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.1
+
+### Patch Changes
+
+- 0d73c9f: Add `backlinks` i18n keys to the `notes` namespace (en/he/ru) — used by the new backlinks ("linked mentions") panel on the note page.
+
 ## 0.8.0
 
 ### Minor Changes
