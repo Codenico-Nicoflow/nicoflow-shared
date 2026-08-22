@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.6.3
+
+### Patch Changes
+
+- 49cb911: Add `toolbar.callout` and `toolbar.divider` keys to the `notes` i18n namespace (en/he/ru) — used by the new callout and divider block-insert toolbar buttons.
+
 ## 0.6.2
 
 ### Patch Changes
