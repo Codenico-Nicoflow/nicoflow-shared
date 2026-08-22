@@ -243,6 +243,37 @@ describe('noteApi slice', () => {
   });
 });
 
+describe('getBacklinks (NIC-1973 backlinks panel)', () => {
+  it('returns the list of notes that mention the given note', async () => {
+    server.use(
+      http.get(`${API}/notes/n1/backlinks`, () =>
+        HttpResponse.json({
+          data: [
+            makeNote({ id: 'n2', title: 'Sprint planning' }),
+            makeNote({ id: 'n3', title: 'Weekly review' }),
+          ],
+          error: null,
+        })
+      )
+    );
+
+    const { store, noteApi } = makeStore();
+    const result = await store.dispatch(noteApi.endpoints.getBacklinks.initiate('n1'));
+
+    expect(result.data).toHaveLength(2);
+    expect(result.data?.[0]?.title).toBe('Sprint planning');
+  });
+
+  it('returns an empty array when nothing links to the note', async () => {
+    server.use(http.get(`${API}/notes/n1/backlinks`, () => HttpResponse.json({ data: [], error: null })));
+
+    const { store, noteApi } = makeStore();
+    const result = await store.dispatch(noteApi.endpoints.getBacklinks.initiate('n1'));
+
+    expect(result.data).toEqual([]);
+  });
+});
+
 describe('searchMentions (NIC-1972 @-mention typeahead)', () => {
   it('passes q and excludeId as query params', async () => {
     let capturedUrl = '';
