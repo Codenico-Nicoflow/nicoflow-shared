@@ -30,6 +30,13 @@
     "count_one": "{{count}} note",
     "count_other": "{{count}} notes"
   },
+  "backlinks": {
+    "heading": "Linked mentions",
+    "emptyTitle": "No notes link here yet",
+    "emptyDescription": "When another note mentions this one with @, it will show up here.",
+    "count_one": "{{count}} linked note",
+    "count_other": "{{count}} linked notes"
+  },
   "save": {
     "unsaved": "Unsaved changes",
     "saving": "Saving…",
