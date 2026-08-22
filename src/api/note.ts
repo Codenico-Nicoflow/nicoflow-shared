@@ -5,7 +5,14 @@ import type { ApiEnvelope, ApiErrorBody, INoteDetail } from '../types';
 import { NOTE_API } from '../types';
 
 import type { ApiBaseQuery } from './area';
-import type { CreateNoteRequest, ListNotesPage, ListNotesRequest, UpdateNoteRequest } from './note.types';
+import type {
+  CreateNoteRequest,
+  IMentionResult,
+  ListNotesPage,
+  ListNotesRequest,
+  SearchMentionsRequest,
+  UpdateNoteRequest,
+} from './note.types';
 
 // The raw RTK Query error is { status, data: <full envelope> }, so the API code
 // sits at error.data.error.code — one level deeper than the bare `error.data`
@@ -133,6 +140,20 @@ export const createNoteApi = (baseQuery: ApiBaseQuery) => {
           { type: 'Note', id },
           { type: 'Note', id: 'LIST' },
         ],
+      }),
+
+      // @-mention typeahead (NIC-1972). Deliberately untagged: results are
+      // titles-only from a live query, never cached against edits to those
+      // notes — a stale title in a dropdown that's about to be dismissed
+      // isn't worth invalidating the world for.
+      searchMentions: builder.query<IMentionResult[], SearchMentionsRequest>({
+        query: ({ q, excludeId }) => {
+          const params = new URLSearchParams({ q });
+          if (excludeId) params.set('excludeId', excludeId);
+          return `${NOTE_API.SEARCH}?${params.toString()}`;
+        },
+        transformResponse: (raw: ApiEnvelope<IMentionResult[]>) => raw.data,
+        transformErrorResponse: toApiError,
       }),
 
       deleteNote: builder.mutation<void, string>({

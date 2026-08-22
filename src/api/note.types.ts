@@ -30,3 +30,17 @@ export type UpdateNoteRequest = {
   title?: string;
   content?: TiptapDoc;
 };
+
+// GET /notes/search?q=&excludeId= — the @-mention typeahead (NIC-1972).
+// excludeId omits the note currently being edited from its own results.
+export type SearchMentionsRequest = {
+  q: string;
+  excludeId?: string;
+};
+
+// Titles only, by design — a mention dropdown never needs an excerpt, unlike
+// the backlinks panel or full search (SearchMentions on the server, note/types.go).
+export type IMentionResult = {
+  id: string;
+  title: string;
+};
