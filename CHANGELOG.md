@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.6.1
+
+### Patch Changes
+
+- 01714c3: Add `TASK_COMPLETED` key to the `errors` i18n namespace (en/he/ru) — used for the success toast shown when a task is marked done.
+
 ## 0.6.0
 
 ### Minor Changes
