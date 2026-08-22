@@ -242,3 +242,39 @@ describe('noteApi slice', () => {
     sub.unsubscribe();
   });
 });
+
+describe('searchMentions (NIC-1972 @-mention typeahead)', () => {
+  it('passes q and excludeId as query params', async () => {
+    let capturedUrl = '';
+    server.use(
+      http.get(`${API}/notes/search`, ({ request }) => {
+        capturedUrl = request.url;
+        return HttpResponse.json({ data: [{ id: 'n2', title: 'Roadmap' }], error: null });
+      })
+    );
+
+    const { store, noteApi } = makeStore();
+    const result = await store.dispatch(
+      noteApi.endpoints.searchMentions.initiate({ q: 'road', excludeId: 'n1' })
+    );
+
+    expect(result.data).toEqual([{ id: 'n2', title: 'Roadmap' }]);
+    expect(capturedUrl).toContain('q=road');
+    expect(capturedUrl).toContain('excludeId=n1');
+  });
+
+  it('omits excludeId from the query string when not provided', async () => {
+    let capturedUrl = '';
+    server.use(
+      http.get(`${API}/notes/search`, ({ request }) => {
+        capturedUrl = request.url;
+        return HttpResponse.json({ data: [], error: null });
+      })
+    );
+
+    const { store, noteApi } = makeStore();
+    await store.dispatch(noteApi.endpoints.searchMentions.initiate({ q: 'road' }));
+
+    expect(capturedUrl).not.toContain('excludeId');
+  });
+});

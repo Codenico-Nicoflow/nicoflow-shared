@@ -94,6 +94,7 @@ export const NOTE_API = {
   LIST: '/notes', // GET ?projectId= → NoteView[]
   CREATE: '/notes', // POST → NoteDetailView (201)
   DETAIL: '/notes/', // + id (GET → NoteDetailView | PATCH → 200/409 | DELETE → 204)
+  SEARCH: '/notes/search', // GET ?q=&excludeId= → MentionResult[] (NIC-1972 @-mention typeahead)
 };
 
 export const HABIT_API = {

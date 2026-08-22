@@ -127,7 +127,14 @@ export { MAX_SELECTED_CALENDARS } from './google-calendar.types';
 export type { CheckInRequest, CreateHabitRequest, UndoCheckInRequest, UpdateHabitRequest } from './habit.types';
 
 // Note types
-export type { CreateNoteRequest, ListNotesPage, ListNotesRequest, UpdateNoteRequest } from './note.types';
+export type {
+  CreateNoteRequest,
+  IMentionResult,
+  ListNotesPage,
+  ListNotesRequest,
+  SearchMentionsRequest,
+  UpdateNoteRequest,
+} from './note.types';
 
 // NLP types
 export type { NLPDateLocale, ParseNLPDateRequest, ParseNLPDateResponse } from './nlp.types';
