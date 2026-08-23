@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.3
+
+### Patch Changes
+
+- 861a091: Add `pagination.previous`/`pagination.next`/`pagination.pageOf` keys to the `common` i18n namespace (en/he/ru), for the frontend's new list pager.
+
 ## 0.8.2
 
 ### Patch Changes
