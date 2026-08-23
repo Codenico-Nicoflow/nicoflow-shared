@@ -125,6 +125,11 @@
   },
   "loading": "טוען…",
   "comingSoon": "בקרוב",
+  "pagination": {
+    "previous": "הקודם",
+    "next": "הבא",
+    "pageOf": "עמוד {{page}} מתוך {{total}}"
+  },
   "planLimit": {
     "title": "הגעת למגבלת התוכנית החינמית",
     "description": "שדרגו ל-Pro לתחומים, פרויקטים, AI ועוד ללא הגבלה.",
