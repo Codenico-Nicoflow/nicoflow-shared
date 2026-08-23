@@ -48,7 +48,7 @@
     "noteBodyPlaceholder": "Add note details..."
   },
   "projectSelector": {
-    "label": "Project *",
+    "label": "Project",
     "placeholder": "Select a project",
     "loading": "Loading projects…"
   },

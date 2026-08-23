@@ -48,7 +48,7 @@
     "noteBodyPlaceholder": "הוסיפו פרטים לפתק..."
   },
   "projectSelector": {
-    "label": "פרויקט *",
+    "label": "פרויקט",
     "placeholder": "בחרו פרויקט",
     "loading": "טוען פרויקטים…"
   },

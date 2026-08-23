@@ -48,7 +48,7 @@
     "noteBodyPlaceholder": "Добавьте детали заметки..."
   },
   "projectSelector": {
-    "label": "Проект *",
+    "label": "Проект",
     "placeholder": "Выберите проект",
     "loading": "Загрузка проектов…"
   },
