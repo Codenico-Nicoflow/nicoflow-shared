@@ -125,6 +125,11 @@
   },
   "loading": "Loading…",
   "comingSoon": "Coming soon",
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{total}}"
+  },
   "planLimit": {
     "title": "You've hit your Free limit",
     "description": "Upgrade to Pro for unlimited areas, projects, AI and more.",
