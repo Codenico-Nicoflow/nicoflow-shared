@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.2
+
+### Patch Changes
+
+- 0340a66: Fix `notes.json`'s `colors` i18n keys (en/he/ru) to match the actual backend-allowlisted swatch token set (gray/brown/orange/yellow/green/blue/purple/pink/red) — the previous keys (amber/teal) never matched what the API accepts, and the new keys (brown/yellow/pink) were missing entirely.
+
 ## 0.8.1
 
 ### Patch Changes
