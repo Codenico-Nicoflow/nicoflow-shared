@@ -3,6 +3,13 @@ name: Release
 on:
   push:
     branches: [main]
+  # Escape hatch: the auto-merge step below merges the Version Packages PR
+  # using the workflow's own GITHUB_TOKEN, and GitHub deliberately does not
+  # let a GITHUB_TOKEN-authored push re-trigger other workflows (anti-recursion
+  # guard) — so that merge does NOT automatically re-run this workflow to
+  # publish. workflow_dispatch lets a human (or `gh workflow run`) kick the
+  # publish step manually when that happens.
+  workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
