@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.4
+
+### Patch Changes
+
+- 65bbc17: Add Time Spread i18n keys for the create-task button and the tabs/combined view mode toggle (en/he/ru).
+
 ## 0.8.3
 
 ### Patch Changes
