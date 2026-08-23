@@ -202,6 +202,10 @@
     "subtitle": "Your day and week at a glance, carried-over tasks included.",
     "tabsLabel": "Time spread views",
     "loading": "Loading your day…",
+    "createFabLabel": "New task",
+    "viewModeLabel": "Time spread layout",
+    "viewModeTabs": "Tabs",
+    "viewModeCombined": "All in one",
     "actions": {
       "today": "Schedule for today",
       "tomorrow": "Move to tomorrow",

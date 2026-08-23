@@ -203,6 +203,10 @@
     "subtitle": "היום והשבוע שלכם במבט אחד, כולל משימות שנדחו קדימה.",
     "tabsLabel": "תצוגות פריסת זמן",
     "loading": "טוען את היום שלכם…",
+    "createFabLabel": "משימה חדשה",
+    "viewModeLabel": "פריסת תצוגה",
+    "viewModeTabs": "לשוניות",
+    "viewModeCombined": "הכל יחד",
     "actions": {
       "today": "תזמון להיום",
       "tomorrow": "העברה למחר",
