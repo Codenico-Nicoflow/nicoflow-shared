@@ -10,6 +10,13 @@ on:
   # publish. workflow_dispatch lets a human (or `gh workflow run`) kick the
   # publish step manually when that happens.
   workflow_dispatch:
+  # Safety net for the same anti-recursion gap: without this, a merged Version
+  # Packages PR sits unpublished until someone notices and runs workflow_dispatch
+  # by hand (happened twice already). Every 15 min, `changesets/action` no-ops
+  # instantly if there's nothing pending, so the steady-state cost is one cheap
+  # skipped run — cheaper than a silently stuck release.
+  schedule:
+    - cron: '*/15 * * * *'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
