@@ -53,7 +53,10 @@
     "bucketContentRequired": "Bucket content is required",
     "bucketContentMax": "Content must be less than 500 characters",
     "processingResultInvalid": "Please choose a valid option",
-    "scheduledTimeInvalid": "Time must be on a 15-minute boundary (e.g. 09:15)"
+    "scheduledTimeInvalid": "Time must be on a 15-minute boundary (e.g. 09:15)",
+    "recurrenceFreqInvalid": "Please choose a valid frequency",
+    "recurrenceIntervalRange": "Interval must be between 1 and 366",
+    "recurrenceMonthdayRange": "Day of month must be between 1 and 31"
   },
   "language": {
     "label": "Language",
