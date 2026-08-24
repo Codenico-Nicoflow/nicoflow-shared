@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.9.0
+
+### Minor Changes
+
+- 85808d4: Add notification category taxonomy: `categoryForType()` derives `reminder`/`summary`/`celebration`/`system` from the existing notification type, plus typed per-category metadata (`ReminderMetadata`, `SummaryMetadata`, `CelebrationMetadata`, `SystemMetadata`) and a `category` field on `INotification`.
+
 ## 0.8.7
 
 ### Patch Changes
