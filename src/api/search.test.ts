@@ -29,7 +29,7 @@ describe('searchApi slice', () => {
     server.use(
       http.get(`${API}/search`, ({ request }) => {
         seen = new URL(request.url).searchParams;
-        return HttpResponse.json({ data: { tasks: [], projects: [], areas: [] }, error: null });
+        return HttpResponse.json({ data: { tasks: [], projects: [], areas: [], notes: [] }, error: null });
       })
     );
 
@@ -37,7 +37,7 @@ describe('searchApi slice', () => {
     const res = await store.dispatch(searchApi.endpoints.search.initiate('qa area'));
 
     expect(seen?.get('q')).toBe('qa area');
-    expect(seen?.get('types')).toBe('task,project,area');
-    expect('data' in res ? res.data : undefined).toEqual({ tasks: [], projects: [], areas: [] });
+    expect(seen?.get('types')).toBe('task,project,area,note');
+    expect('data' in res ? res.data : undefined).toEqual({ tasks: [], projects: [], areas: [], notes: [] });
   });
 });
