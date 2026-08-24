@@ -22,7 +22,11 @@ const makeUser = (overrides: Partial<IUser> = {}): IUser =>
   }) as IUser;
 
 const makeStore = () => {
-  const actions = { clearAuth: () => ({ type: 'auth/clearAuth' }), setToken: () => ({ type: 'auth/setToken', payload: null }), setUser: () => ({ type: 'auth/setUser', payload: null }) };
+  const actions = {
+    clearAuth: () => ({ type: 'auth/clearAuth' }),
+    setToken: () => ({ type: 'auth/setToken', payload: null }),
+    setUser: () => ({ type: 'auth/setUser', payload: null }),
+  };
   const authApi = createAuthApi(baseQuery, actions, () => 'UTC');
   const store = configureStore({
     reducer: { [authApi.reducerPath]: authApi.reducer },

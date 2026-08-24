@@ -110,5 +110,12 @@ export function createToastHelpers(i18n: I18nLike) {
     return toast.warning(resolveToastMessage(msg));
   }
 
-  return { showErrorToast, showSuccessToast, showInfoToast, showWarningToast, resolveErrorMessage, resolveToastMessage };
+  return {
+    showErrorToast,
+    showSuccessToast,
+    showInfoToast,
+    showWarningToast,
+    resolveErrorMessage,
+    resolveToastMessage,
+  };
 }

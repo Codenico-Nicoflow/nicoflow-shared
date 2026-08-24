@@ -66,7 +66,17 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "changeset": "changeset",
-    "release": "changeset publish"
+    "release": "changeset publish",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   },
   "peerDependencies": {
     "@reduxjs/toolkit": "^2.9.0",
@@ -85,7 +95,10 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
     "msw": "^2.14.6",
+    "prettier": "^3.9.6",
     "react": "^19.1.0",
     "react-redux": "^9.2.0",
     "tsup": "^8.5.0",

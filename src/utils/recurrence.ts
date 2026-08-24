@@ -1,10 +1,5 @@
 import type { IRecurrenceRule, RecurrenceFreq } from '../types';
-import {
-  MONTHDAY_LAST,
-  RECURRENCE_MAX_INTERVAL,
-  RECURRENCE_MIN_INTERVAL,
-  RecurrenceFreq as Freq,
-} from '../types';
+import { MONTHDAY_LAST, RECURRENCE_MAX_INTERVAL, RECURRENCE_MIN_INTERVAL, RecurrenceFreq as Freq } from '../types';
 
 // Pure recurrence helpers: no React, no DOM, no i18next import. Keeps this file
 // import-clean for the E-033 shared-package extraction and reusable by the
@@ -25,12 +20,7 @@ export type SummarizableRule = Pick<IRecurrenceRule, 'freq' | 'interval' | 'byWe
 // `count` is always present: it drives plural selection, so Hebrew's `_two`
 // form resolves for count === 2. Dropping it leaks English into a Hebrew string.
 export type RecurrenceSummaryKey =
-  | 'summary.daily'
-  | 'summary.weekly'
-  | 'summary.monthly'
-  | 'summary.monthlyLast'
-  | 'summary.yearly'
-  | 'freq.weekly';
+  'summary.daily' | 'summary.weekly' | 'summary.monthly' | 'summary.monthlyLast' | 'summary.yearly' | 'freq.weekly';
 
 export type RecurrenceSummary = {
   key: RecurrenceSummaryKey;
@@ -73,11 +63,7 @@ export const summarizeRecurrence = (rule: SummarizableRule): RecurrenceSummary =
 // rules so the UI can block a doomed submit rather than round-trip for a 422.
 // Returns a stable reason, not a message, so the caller owns presentation.
 export type RecurrenceValidationError =
-  | 'intervalOutOfRange'
-  | 'weekdayRequired'
-  | 'monthdayOutOfRange'
-  | 'endBeforeStart'
-  | null;
+  'intervalOutOfRange' | 'weekdayRequired' | 'monthdayOutOfRange' | 'endBeforeStart' | null;
 
 export const validateRecurrence = (rule: {
   freq: RecurrenceFreq;
