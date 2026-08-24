@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.5
+
+### Patch Changes
+
+- 4d88304: Fix leaked raw asterisk markers in i18n labels. `bucket.projectSelector.label` displayed a literal " \*" in en/he/ru — removed; no replacement required-field indicator was intended.
+
 ## 0.8.4
 
 ### Patch Changes
