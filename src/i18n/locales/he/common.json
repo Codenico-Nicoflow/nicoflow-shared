@@ -53,7 +53,10 @@
     "bucketContentRequired": "יש להזין תוכן",
     "bucketContentMax": "התוכן חייב להכיל פחות מ-500 תווים",
     "processingResultInvalid": "יש לבחור אפשרות תקינה",
-    "scheduledTimeInvalid": "השעה חייבת להיות בגבול של 15 דקות (למשל 09:15)"
+    "scheduledTimeInvalid": "השעה חייבת להיות בגבול של 15 דקות (למשל 09:15)",
+    "recurrenceFreqInvalid": "יש לבחור תדירות תקינה",
+    "recurrenceIntervalRange": "המרווח חייב להיות בין 1 ל-366",
+    "recurrenceMonthdayRange": "יום בחודש חייב להיות בין 1 ל-31"
   },
   "language": {
     "label": "שפה",

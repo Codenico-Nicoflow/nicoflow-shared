@@ -53,7 +53,10 @@
     "bucketContentRequired": "Введите содержимое",
     "bucketContentMax": "Содержимое должно содержать менее 500 символов",
     "processingResultInvalid": "Выберите корректный вариант",
-    "scheduledTimeInvalid": "Время должно быть кратно 15 минутам (например, 09:15)"
+    "scheduledTimeInvalid": "Время должно быть кратно 15 минутам (например, 09:15)",
+    "recurrenceFreqInvalid": "Выберите корректную периодичность",
+    "recurrenceIntervalRange": "Интервал должен быть от 1 до 366",
+    "recurrenceMonthdayRange": "День месяца должен быть от 1 до 31"
   },
   "language": {
     "label": "Язык",

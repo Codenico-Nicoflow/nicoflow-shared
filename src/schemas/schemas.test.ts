@@ -6,6 +6,7 @@ import {
   createAreaSchema,
   forgotPasswordSchema,
   loginSchema,
+  processBucketSchema,
   profileSchema,
   projectSchema,
   registerSchema,
@@ -336,6 +337,71 @@ describe('bucketSchema', () => {
   it('rejects content over 500 chars', () => {
     const result = bucketSchema.safeParse({ content: 'a'.repeat(501) });
     expect(result.success).toBe(false);
+  });
+});
+
+describe('processBucketSchema taskDetails', () => {
+  const base = {
+    processingResult: 'task',
+    taskDetails: { title: 'Buy milk', priority: 'medium', energy: 'low' },
+  };
+
+  it('accepts scheduledTime and recurrence together', () => {
+    const result = processBucketSchema.safeParse({
+      ...base,
+      taskDetails: {
+        ...base.taskDetails,
+        scheduledTime: '09:15',
+        recurrence: { freq: 'weekly', interval: 1, byWeekday: [1, 3, 5], startDate: '2026-09-01' },
+      },
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('rejects scheduledTime off the 15-minute boundary', () => {
+    const result = processBucketSchema.safeParse({
+      ...base,
+      taskDetails: { ...base.taskDetails, scheduledTime: '09:07' },
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects an invalid recurrence freq', () => {
+    const result = processBucketSchema.safeParse({
+      ...base,
+      taskDetails: {
+        ...base.taskDetails,
+        recurrence: { freq: 'hourly', interval: 1, startDate: '2026-09-01' },
+      },
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects a byMonthday outside 1..31 (and not the -1 last-day sentinel)', () => {
+    const result = processBucketSchema.safeParse({
+      ...base,
+      taskDetails: {
+        ...base.taskDetails,
+        recurrence: { freq: 'monthly', interval: 1, byMonthday: 32, startDate: '2026-09-01' },
+      },
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('accepts the -1 last-day-of-month sentinel for byMonthday', () => {
+    const result = processBucketSchema.safeParse({
+      ...base,
+      taskDetails: {
+        ...base.taskDetails,
+        recurrence: { freq: 'monthly', interval: 1, byMonthday: -1, startDate: '2026-09-01' },
+      },
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it('allows taskDetails without scheduledTime or recurrence', () => {
+    const result = processBucketSchema.safeParse(base);
+    expect(result.success).toBe(true);
   });
 });
 

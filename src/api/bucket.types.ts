@@ -1,5 +1,7 @@
 import type { IBucket, ProcessingResult, TaskEnergy, TaskPriority, TiptapDoc } from '../types';
 
+import type { RecurrenceSchedule } from './recurrence.types';
+
 export interface CreateBucketDto {
   content: string;
 }
@@ -7,6 +9,13 @@ export interface CreateBucketDto {
 export interface UpdateBucketDto {
   content?: string;
 }
+
+// The schedule fields a processed task can carry, reusing RecurrenceSchedule's
+// freq/interval/date shape. byWeekday is optional here (unlike the standalone
+// recurrence-rule endpoint) since bucket-process only requires it for weekly freq.
+export type TaskRecurrence = Omit<RecurrenceSchedule, 'byWeekday' | 'scheduledTime'> & {
+  byWeekday?: number[];
+};
 
 // Only title is required; an omitted field means "use the task service default".
 export interface TaskDetails {
@@ -16,6 +25,8 @@ export interface TaskDetails {
   energy?: TaskEnergy;
   rollsOver?: boolean;
   scheduledFor?: string; // soft intention — ISO date "YYYY-MM-DD"
+  scheduledTime?: string; // "HH:MM"
+  recurrence?: TaskRecurrence;
   estimatedMinutes?: number;
   url?: string;
 }
