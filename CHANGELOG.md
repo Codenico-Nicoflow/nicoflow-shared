@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.6
+
+### Patch Changes
+
+- a4a8558: Add optional `projectId` to `UpdateTaskRequest` to support reassigning a task to a different project via `PATCH /v1/tasks/:id`.
+
 ## 0.8.5
 
 ### Patch Changes
