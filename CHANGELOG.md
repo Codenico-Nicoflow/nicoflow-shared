@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.9.1
+
+### Patch Changes
+
+- 6b658ba: fix(search): include `note` in the default search `types` param so note titles surface in global search results
+
 ## 0.9.0
 
 ### Minor Changes
