@@ -80,5 +80,14 @@ export type {
 export type { ApiEnvelope, ApiErrorBody } from './interfaces';
 export { ActiveTab } from './interfaces';
 export { HabitPolarity, HabitScheduleKind, HabitStreakUnit } from './interfaces';
+export type {
+  CelebrationMetadata,
+  NotificationMetadata,
+  ReminderMetadata,
+  SummaryMetadata,
+  SystemMetadata,
+} from './notification';
+export type { NotificationCategory as NotificationCategoryType } from './notification';
+export { NotificationCategory, NotificationType, categoryForType } from './notification';
 export type { JsonValue, TiptapDoc, TiptapMark } from './tiptap';
 export { EMPTY_TIPTAP_DOC, withEditableBody } from './tiptap';

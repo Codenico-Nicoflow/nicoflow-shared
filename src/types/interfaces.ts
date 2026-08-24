@@ -4,6 +4,7 @@
 
 import type { ProcessingResult, RecurrenceFreq, TaskEnergy, TaskPriority, TaskStatus } from './constants';
 import type { IconId } from './icons';
+import type { NotificationCategory } from './notification';
 import type { TiptapDoc } from './tiptap';
 
 // ============================================
@@ -136,6 +137,9 @@ export interface IBucket {
 export interface INotification {
   id: string;
   type: string;
+  // Derived server-side from `type` — never stored in the DB.
+  // See categoryForType() in @nicoflow/shared/types for the mapping.
+  category: NotificationCategory;
   title: string;
   body: string;
   metadata: Record<string, unknown>;

@@ -4,6 +4,7 @@ import { http, HttpResponse } from 'msw';
 import { describe, expect, it } from 'vitest';
 
 import { server } from '../../test/server';
+import { NotificationCategory } from '../types';
 import type { INotification } from '../types';
 
 import { createNotificationApi } from './notification';
@@ -15,6 +16,7 @@ const baseQuery = fetchBaseQuery({ baseUrl: API });
 const makeNotification = (overrides: Partial<INotification> = {}): INotification => ({
   id: 'n1',
   type: 'task_due_soon',
+  category: NotificationCategory.REMINDER,
   title: 'Task due',
   body: 'This task is scheduled soon.',
   metadata: {},
