@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.8.7
+
+### Patch Changes
+
+- b9478dc: Add `scheduledTime` and `recurrence` to the bucket-process `taskDetails` request type and its Zod schema, matching the backend's `POST /v1/bucket/:id/process` contract. `recurrence` reuses `RecurrenceSchedule`'s freq/interval/date shape via a new `TaskRecurrence` type.
+
 ## 0.8.6
 
 ### Patch Changes
