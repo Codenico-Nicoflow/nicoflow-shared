@@ -39,6 +39,7 @@ export type CreateTaskResponse = ITask;
 // endpoint), so they are not part of the PATCH body.
 export type UpdateTaskRequest = {
   id: string;
+  projectId?: string; // reassign to a different project the caller owns; a task is never unassigned to null
   title?: string;
   notes?: string | null;
   status?: TaskStatus;
