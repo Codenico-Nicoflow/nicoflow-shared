@@ -84,9 +84,7 @@ export function resolveGentleDate(task: Pick<ITask, 'scheduledFor' | 'rollsOver'
   if (date.getTime() === today.getTime()) return { kind: 'scheduledToday' };
   if (date.getTime() === tomorrow.getTime()) return { kind: 'scheduledTomorrow' };
   if (date.getTime() < today.getTime()) {
-    return task.rollsOver
-      ? { kind: 'carriedOver' }
-      : { kind: 'passedNotRolling', formattedDate: formatMonthDay(date) };
+    return task.rollsOver ? { kind: 'carriedOver' } : { kind: 'passedNotRolling', formattedDate: formatMonthDay(date) };
   }
   return { kind: 'scheduledFuture', formattedDate: formatMonthDay(date) };
 }

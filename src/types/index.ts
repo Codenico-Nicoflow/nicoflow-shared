@@ -88,6 +88,6 @@ export type {
   SystemMetadata,
 } from './notification';
 export type { NotificationCategory as NotificationCategoryType } from './notification';
-export { NotificationCategory, NotificationType, categoryForType } from './notification';
+export { categoryForType, NotificationCategory, NotificationType } from './notification';
 export type { JsonValue, TiptapDoc, TiptapMark } from './tiptap';
 export { EMPTY_TIPTAP_DOC, withEditableBody } from './tiptap';

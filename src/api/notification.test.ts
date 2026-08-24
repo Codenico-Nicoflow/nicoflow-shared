@@ -4,8 +4,8 @@ import { http, HttpResponse } from 'msw';
 import { describe, expect, it } from 'vitest';
 
 import { server } from '../../test/server';
-import { NotificationCategory } from '../types';
 import type { INotification } from '../types';
+import { NotificationCategory } from '../types';
 
 import { createNotificationApi } from './notification';
 
@@ -42,14 +42,20 @@ describe('notificationApi slice', () => {
   it('getNotifications unwraps the { items, nextCursor } envelope', async () => {
     server.use(
       http.get(`${API}/notifications`, () =>
-        HttpResponse.json({ data: { items: [makeNotification({ id: 'n1' })], nextCursor: 'cur' }, error: null })
+        HttpResponse.json({
+          data: { items: [makeNotification({ id: 'n1' })], nextCursor: 'cur' },
+          error: null,
+        })
       )
     );
 
     const { store, notificationApi } = makeStore();
     const res = await store.dispatch(notificationApi.endpoints.getNotifications.initiate({}));
 
-    expect(res.data).toEqual({ items: [expect.objectContaining({ id: 'n1' })], nextCursor: 'cur' });
+    expect(res.data).toEqual({
+      items: [expect.objectContaining({ id: 'n1' })],
+      nextCursor: 'cur',
+    });
   });
 
   it('getNotifications forwards isRead + cursor as query params', async () => {
@@ -57,12 +63,20 @@ describe('notificationApi slice', () => {
     server.use(
       http.get(`${API}/notifications`, ({ request }) => {
         url = new URL(request.url).search;
-        return HttpResponse.json({ data: { items: [], nextCursor: '' }, error: null });
+        return HttpResponse.json({
+          data: { items: [], nextCursor: '' },
+          error: null,
+        });
       })
     );
 
     const { store, notificationApi } = makeStore();
-    await store.dispatch(notificationApi.endpoints.getNotifications.initiate({ isRead: false, cursor: 'abc' }));
+    await store.dispatch(
+      notificationApi.endpoints.getNotifications.initiate({
+        isRead: false,
+        cursor: 'abc',
+      })
+    );
 
     expect(url).toContain('isRead=false');
     expect(url).toContain('cursor=abc');
@@ -85,11 +99,17 @@ describe('notificationApi slice', () => {
     server.use(
       http.get(`${API}/notifications/unread-count`, () => {
         countCalls += 1;
-        return HttpResponse.json({ data: { count: countCalls === 1 ? 2 : 1 }, error: null });
+        return HttpResponse.json({
+          data: { count: countCalls === 1 ? 2 : 1 },
+          error: null,
+        });
       }),
       http.patch(`${API}/notifications/n1/read`, () => {
         readHit = true;
-        return HttpResponse.json({ data: makeNotification({ id: 'n1', isRead: true }), error: null });
+        return HttpResponse.json({
+          data: makeNotification({ id: 'n1', isRead: true }),
+          error: null,
+        });
       })
     );
 
@@ -180,7 +200,10 @@ describe('notificationApi slice', () => {
     expect(get.data).toEqual(expect.objectContaining({ emailDigest: true, beforeDueMinutes: 1440 }));
 
     const put = await store.dispatch(
-      notificationApi.endpoints.updatePreferences.initiate({ emailDigest: false, beforeDueMinutes: 60 })
+      notificationApi.endpoints.updatePreferences.initiate({
+        emailDigest: false,
+        beforeDueMinutes: 60,
+      })
     );
     expect(body).toEqual({ emailDigest: false, beforeDueMinutes: 60 });
     expect('data' in put ? put.data : undefined).toEqual(

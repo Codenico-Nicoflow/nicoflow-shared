@@ -248,10 +248,7 @@ describe('getBacklinks (NIC-1973 backlinks panel)', () => {
     server.use(
       http.get(`${API}/notes/n1/backlinks`, () =>
         HttpResponse.json({
-          data: [
-            makeNote({ id: 'n2', title: 'Sprint planning' }),
-            makeNote({ id: 'n3', title: 'Weekly review' }),
-          ],
+          data: [makeNote({ id: 'n2', title: 'Sprint planning' }), makeNote({ id: 'n3', title: 'Weekly review' })],
           error: null,
         })
       )
@@ -285,9 +282,7 @@ describe('searchMentions (NIC-1972 @-mention typeahead)', () => {
     );
 
     const { store, noteApi } = makeStore();
-    const result = await store.dispatch(
-      noteApi.endpoints.searchMentions.initiate({ q: 'road', excludeId: 'n1' })
-    );
+    const result = await store.dispatch(noteApi.endpoints.searchMentions.initiate({ q: 'road', excludeId: 'n1' }));
 
     expect(result.data).toEqual([{ id: 'n2', title: 'Roadmap' }]);
     expect(capturedUrl).toContain('q=road');

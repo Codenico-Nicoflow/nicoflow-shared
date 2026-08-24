@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { NotificationCategory, NotificationType, categoryForType } from './notification';
+import { categoryForType, NotificationCategory, NotificationType } from './notification';
 
 describe('categoryForType', () => {
   it.each([
