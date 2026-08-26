@@ -2,7 +2,8 @@
   "editor": {
     "label": "Note content",
     "placeholder": "Start writing…",
-    "contentError": "This note couldn't be opened — its content is in an unexpected format. Editing is disabled so the stored version isn't overwritten."
+    "contentError": "This note couldn't be opened — its content is in an unexpected format. Editing is disabled so the stored version isn't overwritten.",
+    "mentionEmpty": "No notes found"
   },
   "page": {
     "titlePlaceholder": "Note title",
