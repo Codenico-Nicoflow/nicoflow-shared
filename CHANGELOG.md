@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.9.3
+
+### Patch Changes
+
+- caafd36: Add `notes:editor.calloutIconTitle` and `notes:editor.calloutColorTitle` locale keys (en/he/ru) for mobile's native callout icon/color edit sheets.
+
 ## 0.9.2
 
 ### Patch Changes
