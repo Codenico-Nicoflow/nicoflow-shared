@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.9.2
+
+### Patch Changes
+
+- 6d555c2: Add `notes:editor.mentionEmpty` locale key (en/he/ru) for mobile's @-mention typeahead empty state.
+
 ## 0.9.1
 
 ### Patch Changes
