@@ -100,6 +100,8 @@
       "red": "Красный"
     },
     "callout": "Вставить врезку",
+    "calloutIconTitle": "Значок врезки",
+    "calloutColorTitle": "Цвет врезки",
     "divider": "Вставить разделитель"
   }
 }

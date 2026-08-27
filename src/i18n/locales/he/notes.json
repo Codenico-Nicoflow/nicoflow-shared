@@ -98,6 +98,8 @@
       "red": "אדום"
     },
     "callout": "הוספת תיבת הבלטה",
+    "calloutIconTitle": "סמל תיבת הבלטה",
+    "calloutColorTitle": "צבע תיבת הבלטה",
     "divider": "הוספת קו מפריד"
   }
 }

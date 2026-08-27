@@ -96,6 +96,8 @@
       "red": "Red"
     },
     "callout": "Insert callout",
+    "calloutIconTitle": "Callout icon",
+    "calloutColorTitle": "Callout color",
     "divider": "Insert divider"
   }
 }
