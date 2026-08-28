@@ -173,6 +173,7 @@ export type {
 
 // Recurrence types
 export type {
+  ConvertToRecurringRequest,
   CreateRecurrenceRuleRequest,
   IRecurrenceRule,
   IRecurrenceStats,
