@@ -25,6 +25,23 @@ export type CreateRecurrenceRuleRequest = RecurrenceSchedule & {
   estimatedMinutes?: number | null;
 };
 
+// POST /tasks/:taskId/convert-to-recurring — turns an existing plain task into
+// instance #1 of a new rule, IN PLACE (no new task row). Same body shape as
+// create, but the server ignores the template fields (title/notes/priority/
+// energy/estimatedMinutes) and projectId — it reads those straight off the
+// task instead, so the produced rule can't drift from what's actually stored.
+// They're still typed here so a caller can build the payload the same way it
+// builds CreateRecurrenceRuleRequest, without the type lying about what's
+// actually read.
+export type ConvertToRecurringRequest = RecurrenceSchedule & {
+  taskId: string;
+  title: string;
+  notes?: string | null;
+  priority?: string;
+  energy?: string;
+  estimatedMinutes?: number | null;
+};
+
 // PATCH /recurrence-rules/:id — every field optional. `endDate: null` explicitly
 // clears the end condition (reviving an exhausted series), which is why it is
 // nullable rather than merely absent.
