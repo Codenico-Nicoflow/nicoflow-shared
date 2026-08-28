@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.10.1
+
+### Patch Changes
+
+- c812f5e: Export `ConvertToRecurringRequest` from `@nicoflow/shared/api` — it was defined and used by `convertTaskToRecurring` in 0.10.0 but missing from the public export barrel, breaking consumers that import the request type.
+
 ## 0.10.0
 
 ### Minor Changes
