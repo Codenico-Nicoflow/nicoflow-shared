@@ -58,7 +58,8 @@
     "repeats": "Repeats",
     "missedLast": "missed last time",
     "pending": "{{count}} pending",
-    "paused": "Paused"
+    "paused": "Paused",
+    "readOnly": "Read-only"
   },
   "settings": {
     "title": "Repeating tasks",
@@ -74,6 +75,7 @@
     "deleteTitle": "Delete repeating task?",
     "deleteDescription": "This ends the series. Completed occurrences are kept in your history; the pending one is removed.",
     "limitReached": "You've reached the {{limit}} repeating tasks included in the free plan.",
+    "readOnlyHint": "Over the free plan's {{limit}}-rule limit — delete a rule or upgrade to edit or resume this one.",
     "upgrade": "Upgrade to Pro"
   },
   "stats": {
