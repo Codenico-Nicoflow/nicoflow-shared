@@ -184,6 +184,57 @@ describe('recurrenceApi slice', () => {
     });
   });
 
+  it('convertTaskToRecurring posts under the task and omits taskId from the body', async () => {
+    let body: Record<string, unknown> = {};
+    server.use(
+      http.post(`${API}/tasks/t1/convert-to-recurring`, async ({ request }) => {
+        body = (await request.json()) as Record<string, unknown>;
+        return HttpResponse.json({ data: makeRule(), error: null });
+      })
+    );
+
+    const { store, recurrenceApi } = makeStore();
+    const res = await store.dispatch(
+      recurrenceApi.endpoints.convertTaskToRecurring.initiate({
+        taskId: 't1',
+        title: 'Wash the floors',
+        freq: RecurrenceFreq.WEEKLY,
+        interval: 1,
+        byWeekday: [1],
+        startDate: '2026-03-02',
+      })
+    );
+
+    expect('data' in res && res.data).toEqual(makeRule());
+    expect(body).not.toHaveProperty('taskId');
+    expect(body).toMatchObject({ title: 'Wash the floors', freq: 'weekly', byWeekday: [1] });
+  });
+
+  it('convertTaskToRecurring invalidates taskApi so the converted task refreshes without a reload', async () => {
+    server.use(
+      http.post(`${API}/tasks/t1/convert-to-recurring`, () => HttpResponse.json({ data: makeRule(), error: null })),
+      http.get(`${API}/time-spread`, () =>
+        HttpResponse.json({ data: { today: [], tomorrow: [], thisWeek: [] }, error: null })
+      )
+    );
+
+    const { store, recurrenceApi, taskApi } = makeStore();
+    await store.dispatch(taskApi.endpoints.getTimeSpread.initiate());
+    await store.dispatch(
+      recurrenceApi.endpoints.convertTaskToRecurring.initiate({
+        taskId: 't1',
+        title: 'Wash the floors',
+        freq: RecurrenceFreq.WEEKLY,
+        interval: 1,
+        byWeekday: [1],
+        startDate: '2026-03-02',
+      })
+    );
+
+    const invalidated = taskApi.util.selectInvalidatedBy(store.getState(), ['TimeSpread']);
+    expect(invalidated.length).toBeGreaterThan(0);
+  });
+
   it('deleteRecurrenceRule issues a DELETE on the rule id', async () => {
     let called = false;
     server.use(

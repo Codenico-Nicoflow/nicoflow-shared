@@ -86,6 +86,7 @@ export const RECURRENCE_API = {
   DETAIL: '/recurrence-rules/', // + id (GET | PATCH | DELETE)
   PAUSE: '/recurrence-rules/', // + `${id}/pause` (PATCH { paused })
   STATS: '/recurrence-rules/', // + `${id}/stats` (GET) → IRecurrenceStats
+  CONVERT: '/tasks/', // + `${taskId}/convert-to-recurring` (POST) → IRecurrenceRule, in place, no new task row
 };
 
 // Project notes (E-053). Routes are flat and top-level, like /attachments — the

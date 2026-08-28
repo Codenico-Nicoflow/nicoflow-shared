@@ -6,6 +6,7 @@ import { RECURRENCE_API } from '../types';
 
 import type { ApiBaseQuery } from './area';
 import type {
+  ConvertToRecurringRequest,
   CreateRecurrenceRuleRequest,
   ListRecurrenceRulesRequest,
   ListRecurrenceRulesResponse,
@@ -112,6 +113,23 @@ export const createRecurrenceApi = (baseQuery: ApiBaseQuery, taskApi: TaskApi) =
           { type: 'RecurrenceRule', id },
           { type: 'RecurrenceRule', id: 'LIST' },
         ],
+        onQueryStarted: refreshTasksOnSuccess,
+      }),
+
+      // Turns an existing plain task into instance #1 of a new rule, IN PLACE —
+      // no new task row. Counterpart to createRecurrenceRule for a task that
+      // already exists rather than one being created fresh. Invalidates the
+      // task family too since the converted task's shape (recurrenceRuleId,
+      // status, scheduledFor/scheduledTime) changed under it.
+      convertTaskToRecurring: builder.mutation<IRecurrenceRule, ConvertToRecurringRequest>({
+        query: ({ taskId, ...body }) => ({
+          url: `${RECURRENCE_API.CONVERT}${taskId}/convert-to-recurring`,
+          method: 'POST',
+          body,
+        }),
+        transformResponse: (raw: ApiEnvelope<IRecurrenceRule>) => raw.data,
+        transformErrorResponse: error => error.data,
+        invalidatesTags: [{ type: 'RecurrenceRule', id: 'LIST' }],
         onQueryStarted: refreshTasksOnSuccess,
       }),
 
