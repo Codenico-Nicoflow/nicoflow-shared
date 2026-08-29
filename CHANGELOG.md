@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.10.3
+
+### Patch Changes
+
+- 6a1e320: Improve notes/task i18n copy: note title placeholder is now "Untitled" (was "Note title"), the title's aria-label calls out that it's clickable to rename, and task detail gets not-found title/description strings for the mobile deep-link/task-sheet route. en/he/ru.
+
 ## 0.10.2
 
 ### Patch Changes
