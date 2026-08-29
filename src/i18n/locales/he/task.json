@@ -297,5 +297,9 @@
       "tentative": "אולי",
       "needsAction": "ללא מענה"
     }
+  },
+  "detail": {
+    "notFoundTitle": "המשימה לא נמצאה",
+    "notFoundDescription": "ייתכן שהמשימה נמחקה או שהקישור שגוי."
   }
 }

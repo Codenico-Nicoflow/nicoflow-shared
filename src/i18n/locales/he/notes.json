@@ -6,8 +6,8 @@
     "mentionEmpty": "לא נמצאו פתקים"
   },
   "page": {
-    "titlePlaceholder": "כותרת הפתק",
-    "titleLabel": "כותרת הפתק",
+    "titlePlaceholder": "ללא כותרת",
+    "titleLabel": "כותרת הפתק — לחץ לשינוי שם",
     "back": "חזרה לפרויקט",
     "delete": "מחיקת הפתק",
     "deleteConfirmTitle": "למחוק את הפתק הזה?",

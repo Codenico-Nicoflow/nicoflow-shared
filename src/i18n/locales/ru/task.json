@@ -302,5 +302,9 @@
       "tentative": "Возможно",
       "needsAction": "Нет ответа"
     }
+  },
+  "detail": {
+    "notFoundTitle": "Задача не найдена",
+    "notFoundDescription": "Возможно, эта задача была удалена или ссылка неверна."
   }
 }

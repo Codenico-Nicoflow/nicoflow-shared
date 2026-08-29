@@ -292,5 +292,9 @@
       "tentative": "Maybe",
       "needsAction": "No reply"
     }
+  },
+  "detail": {
+    "notFoundTitle": "Task not found",
+    "notFoundDescription": "This task may have been deleted, or the link is wrong."
   }
 }
