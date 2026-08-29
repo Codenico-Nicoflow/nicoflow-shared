@@ -46,6 +46,22 @@ export const createSubtaskApi = (baseQuery: ApiBaseQuery) => {
         }),
         transformResponse: (raw: ApiEnvelope<UpdateSubtaskResponse>) => raw.data,
         transformErrorResponse: error => error.data,
+        // Optimistic: the checkbox toggle should feel instant, not wait a
+        // network round-trip — a filled-but-not-yet-ticked checkbox for the
+        // gap between tap and response read as a rendering bug on mobile.
+        onQueryStarted: async ({ taskId, id, ...body }, { dispatch, queryFulfilled }) => {
+          const patch = dispatch(
+            subtaskApi.util.updateQueryData('getSubtasks', taskId, draft => {
+              const found = draft.find(subtask => subtask.id === id);
+              if (found) Object.assign(found, body);
+            })
+          );
+          try {
+            await queryFulfilled;
+          } catch {
+            patch.undo();
+          }
+        },
         invalidatesTags: (_result, _error, { taskId }) => [{ type: 'Subtask', id: taskId }],
       }),
       deleteSubtask: builder.mutation<DeleteSubtaskResponse, DeleteSubtaskRequest>({
