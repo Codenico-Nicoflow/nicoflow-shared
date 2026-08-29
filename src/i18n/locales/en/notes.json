@@ -6,8 +6,8 @@
     "mentionEmpty": "No notes found"
   },
   "page": {
-    "titlePlaceholder": "Note title",
-    "titleLabel": "Note title",
+    "titlePlaceholder": "Untitled",
+    "titleLabel": "Note title — click to rename",
     "back": "Back to project",
     "delete": "Delete note",
     "deleteConfirmTitle": "Delete this note?",

@@ -6,8 +6,8 @@
     "mentionEmpty": "Заметки не найдены"
   },
   "page": {
-    "titlePlaceholder": "Название заметки",
-    "titleLabel": "Название заметки",
+    "titlePlaceholder": "Без названия",
+    "titleLabel": "Название заметки — нажмите, чтобы переименовать",
     "back": "Назад к проекту",
     "delete": "Удалить заметку",
     "deleteConfirmTitle": "Удалить эту заметку?",
