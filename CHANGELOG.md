@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.10.2
+
+### Patch Changes
+
+- 7ca364c: Add optimistic update to updateSubtask so checkbox toggles feel instant, fixing a filled-but-not-ticked checkbox flash while the request is in flight.
+
 ## 0.10.1
 
 ### Patch Changes
