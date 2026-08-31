@@ -152,11 +152,8 @@ export interface INotificationPref {
   emailDigest: boolean;
   pushEnabled: boolean;
   smsEnabled: boolean;
-  beforeDueMinutes: number;
-  afterDueMinutes: number;
-  overdueEnabled: boolean;
-  dailySummaryEnabled: boolean;
-  inboxNudgesEnabled: boolean;
+  morningDigestEnabled: boolean;
+  eveningDigestEnabled: boolean;
   streaksEnabled: boolean;
   morningHour: number;
   eveningHour: number;

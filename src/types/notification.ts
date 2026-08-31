@@ -12,15 +12,13 @@ export const NotificationCategory = {
 
 export type NotificationCategory = (typeof NotificationCategory)[keyof typeof NotificationCategory];
 
-// All 12 known notification type strings.
+// All 7 known notification type strings. task_due_soon, task_overdue,
+// day_plan_nudge, inbox_unprocessed, inbox_stale, task_scheduled_today, and
+// daily_summary were retired in the notification rework (2026-08-31): their
+// counts folded into MORNING_DIGEST/EVENING_DIGEST, both unified across plans.
 export const NotificationType = {
-  TASK_DUE_SOON: 'task_due_soon',
-  TASK_OVERDUE: 'task_overdue',
-  TASK_SCHEDULED_TODAY: 'task_scheduled_today',
-  DAY_PLAN_NUDGE: 'day_plan_nudge',
-  INBOX_UNPROCESSED: 'inbox_unprocessed',
-  INBOX_STALE: 'inbox_stale',
-  DAILY_SUMMARY: 'daily_summary',
+  MORNING_DIGEST: 'morning_digest',
+  EVENING_DIGEST: 'evening_digest',
   TASK_COMPLETED: 'task_completed',
   PROJECT_COMPLETED: 'project_completed',
   INBOX_ZERO: 'inbox_zero',
@@ -34,15 +32,10 @@ export type NotificationType = (typeof NotificationType)[keyof typeof Notificati
 // Unknown types (forward-compat with future backend types) fall back to 'system'.
 export const categoryForType = (type: string): NotificationCategory => {
   switch (type) {
-    case NotificationType.TASK_DUE_SOON:
-    case NotificationType.TASK_OVERDUE:
-    case NotificationType.TASK_SCHEDULED_TODAY:
-    case NotificationType.DAY_PLAN_NUDGE:
-    case NotificationType.INBOX_UNPROCESSED:
-    case NotificationType.INBOX_STALE:
+    case NotificationType.MORNING_DIGEST:
       return NotificationCategory.REMINDER;
 
-    case NotificationType.DAILY_SUMMARY:
+    case NotificationType.EVENING_DIGEST:
       return NotificationCategory.SUMMARY;
 
     case NotificationType.TASK_COMPLETED:
@@ -61,22 +54,21 @@ export const categoryForType = (type: string): NotificationCategory => {
 
 // Discriminated-union metadata shapes, one per category.
 // Fields reflect what producers actually write today — verified against
-// internal/domain/task/notify.go, internal/domain/bucket/notify.go,
-// and internal/jobs/*.go. Widening/tightening is a typing pass only.
+// internal/domain/project/notify.go, internal/domain/task/notify.go,
+// internal/domain/bucket/notify.go, and internal/jobs/*.go. Widening/tightening
+// is a typing pass only.
 
-// reminder: task_due_soon and task_overdue carry no entity ID in metadata
-// (the task title is the notification title; task_completed carries the ID).
-// task_scheduled_today and day_plan_nudge carry a scheduled-task count.
-// inbox_unprocessed and inbox_stale carry an unprocessed count.
+// reminder: morning_digest carries the three rolled-up morning counts.
 export type ReminderMetadata = {
-  // Present on task_scheduled_today and day/plan_nudge.
-  count?: number;
+  scheduled?: number;
+  overdue?: number;
+  unprocessed?: number;
 };
 
-// summary: daily_summary carries completed-task count; streak_milestone carries
-// streak length (streak_milestone is grouped under celebration, not summary).
+// summary: evening_digest carries completed + remaining task counts.
 export type SummaryMetadata = {
-  count?: number;
+  completed?: number;
+  remaining?: number;
 };
 
 // celebration: task_completed carries taskId + projectId; project_completed carries
