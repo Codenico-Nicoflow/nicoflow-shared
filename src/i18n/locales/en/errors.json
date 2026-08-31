@@ -103,5 +103,13 @@
   "GENERAL_ERROR": "Server error. Please try again later.",
   "INVALID_DROP_TARGET": "Invalid drop target.",
   "PREFERENCES_UPDATE_FAILED": "Couldn't update your preference. Check your connection and try again.",
-  "FAVORITE_LIMIT_REACHED": "You can pin up to 5 favorites. Unstar one to make room."
+  "FAVORITE_LIMIT_REACHED": "You can pin up to 5 favorites. Unstar one to make room.",
+  "TASK_NOT_RECURRING": "This task is not a recurring occurrence and cannot be skipped.",
+  "TASK_ALREADY_SKIPPED": "This occurrence has already been skipped.",
+  "TASK_ALREADY_MISSED": "This occurrence has already been missed.",
+  "TASK_ALREADY_PAUSED": "This recurring series is currently paused.",
+  "TASK_ALREADY_CANCELLED": "This occurrence has already been cancelled.",
+  "TASK_NOT_ACTIVE": "This task is not active.",
+  "TASK_RECURRING_NOT_RESCHEDULABLE": "A recurring occurrence can't be rescheduled directly. Skip it or edit the series schedule instead.",
+  "TASK_RECURRING_NOT_REVERSIBLE": "This recurring occurrence can't be reopened — the next occurrence has already been created."
 }

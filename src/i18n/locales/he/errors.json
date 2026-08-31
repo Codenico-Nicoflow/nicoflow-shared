@@ -103,5 +103,13 @@
   "GENERAL_ERROR": "שגיאת שרת. אנא נסו שוב מאוחר יותר.",
   "INVALID_DROP_TARGET": "יעד שחרור לא תקין.",
   "PREFERENCES_UPDATE_FAILED": "עדכון ההעדפה נכשל. בדקו את החיבור ונסו שוב.",
-  "FAVORITE_LIMIT_REACHED": "אפשר להצמיד עד 5 מועדפים. הסירו כוכב מאחד כדי לפנות מקום."
+  "FAVORITE_LIMIT_REACHED": "אפשר להצמיד עד 5 מועדפים. הסירו כוכב מאחד כדי לפנות מקום.",
+  "TASK_NOT_RECURRING": "משימה זו אינה מופע חוזר ולא ניתן לדלג עליה.",
+  "TASK_ALREADY_SKIPPED": "כבר דולגו על מופע זה.",
+  "TASK_ALREADY_MISSED": "מופע זה כבר הוחמץ.",
+  "TASK_ALREADY_PAUSED": "הסדרה החוזרת של מופע זה מושהית.",
+  "TASK_ALREADY_CANCELLED": "מופע זה כבר בוטל.",
+  "TASK_NOT_ACTIVE": "משימה זו אינה פעילה.",
+  "TASK_RECURRING_NOT_RESCHEDULABLE": "לא ניתן לקבוע מחדש מועד למופע חוזר. דלגו עליו או ערכו את לוח הזמנים של הסדרה.",
+  "TASK_RECURRING_NOT_REVERSIBLE": "לא ניתן לפתוח מחדש מופע חוזר שהושלם — המופע הבא כבר נוצר."
 }
