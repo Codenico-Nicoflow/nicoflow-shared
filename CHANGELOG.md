@@ -1,5 +1,11 @@
 # @nicoflow/shared
 
+## 0.10.4
+
+### Patch Changes
+
+- 9cb3d01: Add i18n translations for 8 new recurring-task error codes (TASK_NOT_RECURRING, TASK_ALREADY_SKIPPED, TASK_ALREADY_MISSED, TASK_ALREADY_PAUSED, TASK_ALREADY_CANCELLED, TASK_NOT_ACTIVE, TASK_RECURRING_NOT_RESCHEDULABLE, TASK_RECURRING_NOT_REVERSIBLE).
+
 ## 0.10.3
 
 ### Patch Changes
