@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({ baseUrl: API });
 
 const makeNotification = (overrides: Partial<INotification> = {}): INotification => ({
   id: 'n1',
-  type: 'task_due_soon',
+  type: 'morning_digest',
   category: NotificationCategory.REMINDER,
   title: 'Task due',
   body: 'This task is scheduled soon.',
@@ -166,11 +166,8 @@ describe('notificationApi slice', () => {
             emailDigest: true,
             pushEnabled: false,
             smsEnabled: false,
-            beforeDueMinutes: 1440,
-            afterDueMinutes: 0,
-            overdueEnabled: true,
-            dailySummaryEnabled: true,
-            inboxNudgesEnabled: true,
+            morningDigestEnabled: true,
+            eveningDigestEnabled: true,
             streaksEnabled: true,
           },
           error: null,
@@ -183,11 +180,8 @@ describe('notificationApi slice', () => {
             emailDigest: false,
             pushEnabled: false,
             smsEnabled: false,
-            beforeDueMinutes: 60,
-            afterDueMinutes: 0,
-            overdueEnabled: true,
-            dailySummaryEnabled: true,
-            inboxNudgesEnabled: true,
+            morningDigestEnabled: false,
+            eveningDigestEnabled: true,
             streaksEnabled: true,
           },
           error: null,
@@ -197,17 +191,17 @@ describe('notificationApi slice', () => {
 
     const { store, notificationApi } = makeStore();
     const get = await store.dispatch(notificationApi.endpoints.getPreferences.initiate());
-    expect(get.data).toEqual(expect.objectContaining({ emailDigest: true, beforeDueMinutes: 1440 }));
+    expect(get.data).toEqual(expect.objectContaining({ emailDigest: true, morningDigestEnabled: true }));
 
     const put = await store.dispatch(
       notificationApi.endpoints.updatePreferences.initiate({
         emailDigest: false,
-        beforeDueMinutes: 60,
+        morningDigestEnabled: false,
       })
     );
-    expect(body).toEqual({ emailDigest: false, beforeDueMinutes: 60 });
+    expect(body).toEqual({ emailDigest: false, morningDigestEnabled: false });
     expect('data' in put ? put.data : undefined).toEqual(
-      expect.objectContaining({ emailDigest: false, beforeDueMinutes: 60 })
+      expect.objectContaining({ emailDigest: false, morningDigestEnabled: false })
     );
   });
 });
