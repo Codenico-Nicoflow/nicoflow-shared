@@ -68,8 +68,9 @@
     "changeset": "changeset",
     "release": "changeset publish",
     "prepare": "husky",
-    "codegen": "kubb generate",
-    "codegen:check": "kubb generate && git diff --exit-code HEAD -- src/generated/"
+    "codegen": "kubb generate && node scripts/normalize-generated.mjs && prettier --write --log-level warn src/generated",
+    "codegen:check": "pnpm codegen:tamper && pnpm codegen && git diff --exit-code HEAD -- src/generated/",
+    "codegen:tamper": "git diff --exit-code HEAD -- src/generated/"
   },
   "lint-staged": {
     "*.{js,ts}": [

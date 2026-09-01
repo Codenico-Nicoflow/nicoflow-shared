@@ -54,15 +54,6 @@ export type {
   DeleteBucketIdStatus404,
 } from './DeleteBucketId';
 export type {
-  DeleteHabitsIdOptions,
-  DeleteHabitsIdPath,
-  DeleteHabitsIdQuery,
-  DeleteHabitsIdResponse,
-  DeleteHabitsIdResponses,
-  DeleteHabitsIdStatus204,
-  DeleteHabitsIdStatus404,
-} from './DeleteHabitsId';
-export type {
   DeleteHabitsIdCheckInBody,
   DeleteHabitsIdCheckInOptions,
   DeleteHabitsIdCheckInPath,
@@ -72,6 +63,15 @@ export type {
   DeleteHabitsIdCheckInStatus404,
   DeleteHabitsIdCheckInStatus422,
 } from './DeleteHabitsIdCheckIn';
+export type {
+  DeleteHabitsIdOptions,
+  DeleteHabitsIdPath,
+  DeleteHabitsIdQuery,
+  DeleteHabitsIdResponse,
+  DeleteHabitsIdResponses,
+  DeleteHabitsIdStatus204,
+  DeleteHabitsIdStatus404,
+} from './DeleteHabitsId';
 export type {
   DeleteNotesIdOptions,
   DeleteNotesIdPath,
@@ -127,14 +127,6 @@ export type {
   DeleteUsersMeStatus401,
 } from './DeleteUsersMe';
 export type {
-  GetAreasOptions,
-  GetAreasQuery,
-  GetAreasResponse,
-  GetAreasResponses,
-  GetAreasStatus200,
-  GetAreasStatus400,
-} from './GetAreas';
-export type {
   GetAreasAreaidProjectsOptions,
   GetAreasAreaidProjectsPath,
   GetAreasAreaidProjectsQuery,
@@ -152,12 +144,19 @@ export type {
   GetAreasIdStatus404,
 } from './GetAreasId';
 export type {
+  GetAreasOptions,
+  GetAreasQuery,
+  GetAreasResponse,
+  GetAreasResponses,
+  GetAreasStatus200,
+  GetAreasStatus400,
+} from './GetAreas';
+export type {
   GetAreasWithProjectsOptions,
   GetAreasWithProjectsResponse,
   GetAreasWithProjectsResponses,
   GetAreasWithProjectsStatus200,
 } from './GetAreasWithProjects';
-export type { GetBucketOptions, GetBucketResponse, GetBucketResponses, GetBucketStatus200 } from './GetBucket';
 export type {
   GetBucketIdOptions,
   GetBucketIdPath,
@@ -166,6 +165,7 @@ export type {
   GetBucketIdStatus200,
   GetBucketIdStatus404,
 } from './GetBucketId';
+export type { GetBucketOptions, GetBucketResponse, GetBucketResponses, GetBucketStatus200 } from './GetBucket';
 export type {
   GetCalendarGoogleCalendarsOptions,
   GetCalendarGoogleCalendarsResponse,
@@ -192,13 +192,6 @@ export type {
   GetFocusStatus400,
 } from './GetFocus';
 export type {
-  GetHabitsOptions,
-  GetHabitsQuery,
-  GetHabitsResponse,
-  GetHabitsResponses,
-  GetHabitsStatus200,
-} from './GetHabits';
-export type {
   GetHabitsIdOptions,
   GetHabitsIdPath,
   GetHabitsIdResponse,
@@ -206,6 +199,13 @@ export type {
   GetHabitsIdStatus200,
   GetHabitsIdStatus404,
 } from './GetHabitsId';
+export type {
+  GetHabitsOptions,
+  GetHabitsQuery,
+  GetHabitsResponse,
+  GetHabitsResponses,
+  GetHabitsStatus200,
+} from './GetHabits';
 export type {
   GetHabitsSubjectsOptions,
   GetHabitsSubjectsResponse,
@@ -219,14 +219,13 @@ export type {
   GetHabitsTodayStatus200,
 } from './GetHabitsToday';
 export type {
-  GetNotesOptions,
-  GetNotesQuery,
-  GetNotesResponse,
-  GetNotesResponses,
-  GetNotesStatus200,
-  GetNotesStatus404,
-  GetNotesStatus422,
-} from './GetNotes';
+  GetNotesIdBacklinksOptions,
+  GetNotesIdBacklinksPath,
+  GetNotesIdBacklinksResponse,
+  GetNotesIdBacklinksResponses,
+  GetNotesIdBacklinksStatus200,
+  GetNotesIdBacklinksStatus404,
+} from './GetNotesIdBacklinks';
 export type {
   GetNotesIdOptions,
   GetNotesIdPath,
@@ -236,13 +235,14 @@ export type {
   GetNotesIdStatus404,
 } from './GetNotesId';
 export type {
-  GetNotesIdBacklinksOptions,
-  GetNotesIdBacklinksPath,
-  GetNotesIdBacklinksResponse,
-  GetNotesIdBacklinksResponses,
-  GetNotesIdBacklinksStatus200,
-  GetNotesIdBacklinksStatus404,
-} from './GetNotesIdBacklinks';
+  GetNotesOptions,
+  GetNotesQuery,
+  GetNotesResponse,
+  GetNotesResponses,
+  GetNotesStatus200,
+  GetNotesStatus404,
+  GetNotesStatus422,
+} from './GetNotes';
 export type {
   GetNotesSearchOptions,
   GetNotesSearchQuery,
@@ -271,14 +271,6 @@ export type {
   GetNotificationsUnreadCountStatus200,
 } from './GetNotificationsUnreadCount';
 export type {
-  GetProjectsOptions,
-  GetProjectsQuery,
-  GetProjectsResponse,
-  GetProjectsResponses,
-  GetProjectsStatus200,
-  GetProjectsStatus400,
-} from './GetProjects';
-export type {
   GetProjectsIdOptions,
   GetProjectsIdPath,
   GetProjectsIdResponse,
@@ -286,6 +278,14 @@ export type {
   GetProjectsIdStatus200,
   GetProjectsIdStatus404,
 } from './GetProjectsId';
+export type {
+  GetProjectsOptions,
+  GetProjectsQuery,
+  GetProjectsResponse,
+  GetProjectsResponses,
+  GetProjectsStatus200,
+  GetProjectsStatus400,
+} from './GetProjects';
 export type {
   GetProjectsProjectidTasksOptions,
   GetProjectsProjectidTasksPath,
@@ -306,14 +306,6 @@ export type {
   GetSearchStatus401,
 } from './GetSearch';
 export type {
-  GetTasksOptions,
-  GetTasksQuery,
-  GetTasksResponse,
-  GetTasksResponses,
-  GetTasksStatus200,
-  GetTasksStatus422,
-} from './GetTasks';
-export type {
   GetTasksIdOptions,
   GetTasksIdPath,
   GetTasksIdResponse,
@@ -321,6 +313,14 @@ export type {
   GetTasksIdStatus200,
   GetTasksIdStatus404,
 } from './GetTasksId';
+export type {
+  GetTasksOptions,
+  GetTasksQuery,
+  GetTasksResponse,
+  GetTasksResponses,
+  GetTasksStatus200,
+  GetTasksStatus422,
+} from './GetTasks';
 export type {
   GetTasksTaskidSubtasksOptions,
   GetTasksTaskidSubtasksPath,
@@ -550,16 +550,6 @@ export type {
   PatchUsersMeStatus422,
 } from './PatchUsersMe';
 export type {
-  PostAreasBody,
-  PostAreasOptions,
-  PostAreasResponse,
-  PostAreasResponses,
-  PostAreasStatus201,
-  PostAreasStatus403,
-  PostAreasStatus409,
-  PostAreasStatus422,
-} from './PostAreas';
-export type {
   PostAreasAreaidProjectsBody,
   PostAreasAreaidProjectsOptions,
   PostAreasAreaidProjectsPath,
@@ -571,6 +561,16 @@ export type {
   PostAreasAreaidProjectsStatus409,
   PostAreasAreaidProjectsStatus422,
 } from './PostAreasAreaidProjects';
+export type {
+  PostAreasBody,
+  PostAreasOptions,
+  PostAreasResponse,
+  PostAreasResponses,
+  PostAreasStatus201,
+  PostAreasStatus403,
+  PostAreasStatus409,
+  PostAreasStatus422,
+} from './PostAreas';
 export type {
   PostAuthChangePasswordBody,
   PostAuthChangePasswordOptions,
@@ -602,18 +602,18 @@ export type {
   PostAuthLoginStatus429,
 } from './PostAuthLogin';
 export type {
-  PostAuthLogoutOptions,
-  PostAuthLogoutResponse,
-  PostAuthLogoutResponses,
-  PostAuthLogoutStatus204,
-} from './PostAuthLogout';
-export type {
   PostAuthLogoutAllOptions,
   PostAuthLogoutAllResponse,
   PostAuthLogoutAllResponses,
   PostAuthLogoutAllStatus204,
   PostAuthLogoutAllStatus401,
 } from './PostAuthLogoutAll';
+export type {
+  PostAuthLogoutOptions,
+  PostAuthLogoutResponse,
+  PostAuthLogoutResponses,
+  PostAuthLogoutStatus204,
+} from './PostAuthLogout';
 export type {
   PostAuthRefreshTokenOptions,
   PostAuthRefreshTokenResponse,
