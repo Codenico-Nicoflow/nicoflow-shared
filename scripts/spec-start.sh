@@ -62,6 +62,35 @@ fi
 CONSUMERS=$(awk -F'[][]' '/^consumers:/{print $2}' "$SPEC" | tr -d ' ' | tr ',' ' ')
 [ -n "$CONSUMERS" ] || die "spec frontmatter has no consumers: [...]"
 
+# The spec and task list must already be on the base branch, because that is
+# what the worktree inherits. Copying them in afterwards produces a second copy
+# that lives only in the worktree — invisible in a normal checkout, so the plan
+# cannot be reviewed before the loop executes it, and edits to the visible copy
+# do nothing. Merge the spec first; then every worktree gets it for free.
+MISSING=""
+for name in $CONSUMERS; do
+  repo="$ROOT/nicoflow-$name"
+  [ -d "$repo/.git" ] || die "no repo at $repo"
+
+  base=staging
+  [ "$name" = "shared" ] && base=main
+  git -C "$repo" fetch origin "$base" --quiet 2>/dev/null
+
+  if ! git -C "$repo" cat-file -e "origin/$base:specs/$SLUG/tasks.md" 2>/dev/null; then
+    MISSING="$MISSING\n  nicoflow-$name: specs/$SLUG/tasks.md missing on origin/$base"
+  fi
+done
+
+if [ -n "$MISSING" ]; then
+  echo "spec-start: the spec is not on the base branch yet" >&2
+  printf "%b\n" "$MISSING" >&2
+  echo >&2
+  echo "  Merge the spec and task list to staging (main for shared) first." >&2
+  echo "  The worktree branches from there, so that is what it inherits — and" >&2
+  echo "  it is where you can read the plan before anything runs." >&2
+  exit 1
+fi
+
 echo "spec-start: $SLUG"
 echo "  consumers: $CONSUMERS"
 echo "  worktrees: $WORKTREE_ROOT"
