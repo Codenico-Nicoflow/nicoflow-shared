@@ -32,15 +32,29 @@ die() { echo "spec-start: $1" >&2; exit 1; }
 # ---------------------------------------------------------------- readiness
 # An unanswered product question is the one thing a loop cannot recover from:
 # it will guess, and the guess will pass every gate.
-if awk '/^## Open Questions/{f=1;next} /^## /{f=0} f' "$SPEC" | grep -qE '[^[:space:]_]'; then
-  die "spec has unresolved Open Questions — finish the grill first"
+# A question is "open" only if it is a real line of prose. Drop blank lines and
+# explicit placeholders — _(none)_, (none), n/a — because those mean the grill
+# resolved everything and said so. Whatever survives is a genuine open question.
+# `|| true` because grep exits 1 when it filters everything out, and under
+# `set -e` that empty-and-therefore-good result would kill the script silently.
+OPEN_QUESTIONS=$(
+  awk '/^## Open Questions/{f=1;next} /^## /{f=0} f' "$SPEC" \
+    | grep -vE '^[[:space:]]*$' \
+    | grep -viE '^[[:space:]]*[_*(]*[[:space:]]*(none|n/?a|nothing|resolved)[[:space:]]*[)_*]*[[:space:]]*$' \
+    || true
+)
+
+if [ -n "$OPEN_QUESTIONS" ]; then
+  echo "spec-start: spec has unresolved Open Questions — finish the grill first" >&2
+  echo "$OPEN_QUESTIONS" | sed 's/^/  /' >&2
+  exit 1
 fi
 
 if ! grep -q '^## Acceptance Criteria' "$SPEC"; then
   die "spec has no Acceptance Criteria section"
 fi
 
-if grep -qE '^## Acceptance Criteria' -A20 "$SPEC" | grep -q 'TODO'; then
+if awk '/^## Acceptance Criteria/{f=1;next} /^## /{f=0} f' "$SPEC" | grep -q 'TODO'; then
   die "acceptance criteria still contain TODO — those must be human-written"
 fi
 

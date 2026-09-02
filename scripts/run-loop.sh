@@ -64,7 +64,15 @@ finish() {
 
 [ -f "$STATE/tasks.md" ] || { echo "no tasks.md — run the planner pass first" >&2; exit 1; }
 
+TOTAL=$(count_matches '^- \[' "$STATE/tasks.md")
+DONE=$(count_matches '^- \[x\]' "$STATE/tasks.md")
+
 echo "loop: $SLUG / $REPO   branch=$BRANCH   max=$MAX_ITER"
+echo "tasks: $DONE/$TOTAL done"
+if [ "$DONE" -gt 0 ]; then
+  echo "resuming — every finished task is already committed, so an interrupted"
+  echo "run costs nothing but the iteration it died in."
+fi
 echo
 
 stall=0
@@ -82,6 +90,7 @@ for i in $(seq 1 "$MAX_ITER"); do
     finish "BLOCKED — see $STATE/blockers.md" "$i" 2
   fi
 
+  OUT=$(mktemp)
   SLUG="$SLUG" SPEC_DIR="$SPEC_DIR" NICOFLOW_LOOP_ACTIVE=1 \
     claude -p --dangerously-skip-permissions \
       "$(cat "$PROMPT")
@@ -91,7 +100,24 @@ Repo: nicoflow-$REPO
 SLUG=$SLUG
 SPEC_DIR=$SPEC_DIR
 Iteration $i of $MAX_ITER.
-Do exactly one task." 2>&1 | tail -20
+Do exactly one task." >"$OUT" 2>&1
+  rc=$?
+  tail -20 "$OUT"
+
+  # An exhausted account, a revoked key or a network outage is not a coding
+  # failure, and retrying it 40 more times helps nobody. Stop on the first one
+  # and say so plainly — the alternative is a terminal full of what looks like
+  # the model failing when the account is simply out.
+  if [ "$rc" -ne 0 ]; then
+    if grep -qiE 'usage limit|rate limit|quota|insufficient credit|billing|401|403|authentication' "$OUT"; then
+      echo
+      echo "  claude exited $rc — looks like credit/auth, not a coding failure"
+      rm -f "$OUT"
+      finish "HALTED — API unavailable (credit, auth or network). Work so far is committed; rerun to resume." "$i" 5
+    fi
+    echo "  claude exited $rc (continuing — treated as a failed iteration)"
+  fi
+  rm -f "$OUT"
 
   after_tasks=$(open_tasks)
   after_sha=$(head_sha)
