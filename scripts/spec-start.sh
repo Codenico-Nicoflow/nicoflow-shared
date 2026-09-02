@@ -2,14 +2,17 @@
 #
 # spec-start <slug> — prepare a feature for the loop.
 #
-# Reads consumers: from the spec's frontmatter, then for each one creates a git
-# worktree, branches it, installs, and links @nicoflow/shared so the inner loop
-# sees local changes without a publish round-trip.
+# Runs IN the repos, not in worktrees. Worktrees hid the work: a spec you cannot
+# see is a spec you cannot review, and the review step is the only human gate in
+# an otherwise autonomous system. The cost is that a repo is busy while its loop
+# runs — that is the trade, and it is deliberate.
 #
-# Worktrees live OUTSIDE the repos they branch from. A worktree nested inside a
-# JS repo carries its own node_modules, including a second copy of React; the
-# test runner resolves both and every hook returns null. That cost us 91 phantom
-# failures in nicoflow-mobile before it was diagnosed.
+# Correct order, enforced below:
+#   1. write spec + tasks
+#   2. MERGE them to staging (main for shared)   <- so they are visible
+#   3. review them in a normal checkout
+#   4. spec-start  (this script)
+#   5. run-loop
 
 set -euo pipefail
 
@@ -23,104 +26,93 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 SHARED="$ROOT/nicoflow-shared"
 SPEC_DIR="$SHARED/specs/$SLUG"
 SPEC="$SPEC_DIR/spec.md"
-WORKTREE_ROOT="$ROOT/.worktrees/$SLUG"
 
 die() { echo "spec-start: $1" >&2; exit 1; }
 
 [ -f "$SPEC" ] || die "no spec at specs/$SLUG/spec.md"
 
 # ---------------------------------------------------------------- readiness
-# An unanswered product question is the one thing a loop cannot recover from:
-# it will guess, and the guess will pass every gate.
-# A question is "open" only if it is a real line of prose. Drop blank lines and
-# explicit placeholders — _(none)_, (none), n/a — because those mean the grill
-# resolved everything and said so. Whatever survives is a genuine open question.
-# `|| true` because grep exits 1 when it filters everything out, and under
-# `set -e` that empty-and-therefore-good result would kill the script silently.
+# An unanswered product question is the one thing a loop cannot recover from: it
+# will guess, and the guess will pass every gate.
 OPEN_QUESTIONS=$(
   awk '/^## Open Questions/{f=1;next} /^## /{f=0} f' "$SPEC" \
     | grep -vE '^[[:space:]]*$' \
     | grep -viE '^[[:space:]]*[_*(]*[[:space:]]*(none|n/?a|nothing|resolved)[[:space:]]*[)_*]*[[:space:]]*$' \
     || true
 )
-
 if [ -n "$OPEN_QUESTIONS" ]; then
   echo "spec-start: spec has unresolved Open Questions — finish the grill first" >&2
   echo "$OPEN_QUESTIONS" | sed 's/^/  /' >&2
   exit 1
 fi
 
-if ! grep -q '^## Acceptance Criteria' "$SPEC"; then
-  die "spec has no Acceptance Criteria section"
-fi
+grep -q '^## Acceptance Criteria' "$SPEC" || die "spec has no Acceptance Criteria section"
 
 if awk '/^## Acceptance Criteria/{f=1;next} /^## /{f=0} f' "$SPEC" | grep -q 'TODO'; then
   die "acceptance criteria still contain TODO — those must be human-written"
 fi
 
-# ---------------------------------------------------------------- consumers
 CONSUMERS=$(awk -F'[][]' '/^consumers:/{print $2}' "$SPEC" | tr -d ' ' | tr ',' ' ')
 [ -n "$CONSUMERS" ] || die "spec frontmatter has no consumers: [...]"
 
-# The spec and task list must already be on the base branch, because that is
-# what the worktree inherits. Copying them in afterwards produces a second copy
-# that lives only in the worktree — invisible in a normal checkout, so the plan
-# cannot be reviewed before the loop executes it, and edits to the visible copy
-# do nothing. Merge the spec first; then every worktree gets it for free.
+base_for() { [ "$1" = "shared" ] && echo main || echo staging; }
+
+# ------------------------------------------------- spec must already be merged
+# The feature branch is cut from the base branch, so anything not on the base is
+# not in the branch. Copying files in afterwards creates a second copy that only
+# the loop can see — two sources of truth for the same file, which is the exact
+# problem this harness exists to remove.
 MISSING=""
 for name in $CONSUMERS; do
   repo="$ROOT/nicoflow-$name"
   [ -d "$repo/.git" ] || die "no repo at $repo"
-
-  base=staging
-  [ "$name" = "shared" ] && base=main
-  git -C "$repo" fetch origin "$base" --quiet 2>/dev/null
-
-  if ! git -C "$repo" cat-file -e "origin/$base:specs/$SLUG/tasks.md" 2>/dev/null; then
-    MISSING="$MISSING\n  nicoflow-$name: specs/$SLUG/tasks.md missing on origin/$base"
-  fi
+  base=$(base_for "$name")
+  git -C "$repo" fetch origin "$base" --quiet 2>/dev/null || true
+  git -C "$repo" cat-file -e "origin/$base:specs/$SLUG/tasks.md" 2>/dev/null \
+    || MISSING="$MISSING\n  nicoflow-$name: specs/$SLUG/tasks.md not on origin/$base"
 done
 
 if [ -n "$MISSING" ]; then
   echo "spec-start: the spec is not on the base branch yet" >&2
   printf "%b\n" "$MISSING" >&2
   echo >&2
-  echo "  Merge the spec and task list to staging (main for shared) first." >&2
-  echo "  The worktree branches from there, so that is what it inherits — and" >&2
-  echo "  it is where you can read the plan before anything runs." >&2
+  echo "  Merge the spec and task list first (staging, or main for shared)." >&2
+  echo "  The feature branch is cut from there, and that is where you read the" >&2
+  echo "  plan before anything runs." >&2
+  exit 1
+fi
+
+# ------------------------------------------------- repos must be clean
+# The loop commits with `git add -A`, so anything uncommitted here would be
+# swept into its commits.
+DIRTY=""
+for name in $CONSUMERS; do
+  repo="$ROOT/nicoflow-$name"
+  [ -z "$(git -C "$repo" status --porcelain)" ] \
+    || DIRTY="$DIRTY\n  nicoflow-$name has uncommitted changes"
+done
+
+if [ -n "$DIRTY" ]; then
+  echo "spec-start: commit or stash your work first — the loop commits with 'git add -A'" >&2
+  printf "%b\n" "$DIRTY" >&2
   exit 1
 fi
 
 echo "spec-start: $SLUG"
 echo "  consumers: $CONSUMERS"
-echo "  worktrees: $WORKTREE_ROOT"
 echo
-
-mkdir -p "$WORKTREE_ROOT"
 
 for name in $CONSUMERS; do
   repo="$ROOT/nicoflow-$name"
-  [ -d "$repo/.git" ] || die "no repo at $repo"
-
-  wt="$WORKTREE_ROOT/nicoflow-$name"
+  base=$(base_for "$name")
   branch="feature/$SLUG"
 
-  if [ -d "$wt" ]; then
-    echo "  [$name] worktree exists, skipping"
-    continue
-  fi
-
-  # nicoflow-shared branches from main; the others from staging.
-  base=staging
-  [ "$name" = "shared" ] && base=main
-
-  echo "  [$name] worktree from origin/$base"
-  git -C "$repo" fetch origin "$base" --quiet
-
   if git -C "$repo" show-ref --verify --quiet "refs/heads/$branch"; then
-    git -C "$repo" worktree add "$wt" "$branch" --quiet
+    echo "  [$name] checkout existing $branch"
+    git -C "$repo" checkout "$branch" --quiet
   else
-    git -C "$repo" worktree add -b "$branch" "$wt" "origin/$base" --quiet
+    echo "  [$name] branch $branch from origin/$base"
+    git -C "$repo" checkout -b "$branch" "origin/$base" --quiet
   fi
 done
 
@@ -128,64 +120,29 @@ done
 # The inner loop must see local @nicoflow/shared edits immediately; publishing
 # per iteration would cost minutes and spray versions. The exit gate re-checks
 # against the published package, which is what catches a broken export map.
-API_WT="$WORKTREE_ROOT/nicoflow-api"
-SHARED_WT="$WORKTREE_ROOT/nicoflow-shared"
-
-if [ -d "$SHARED_WT" ]; then
+if echo "$CONSUMERS" | grep -qw shared; then
   echo
-  echo "  [shared] install + build"
-  (cd "$SHARED_WT" && pnpm install --silent && pnpm build >/dev/null)
+  echo "  [shared] build"
+  (cd "$SHARED" && pnpm install --silent && pnpm build >/dev/null)
+
+  for name in $CONSUMERS; do
+    case "$name" in frontend|mobile) ;; *) continue ;; esac
+    echo "  [$name] link -> nicoflow-shared"
+    (cd "$ROOT/nicoflow-$name" && pnpm link "$SHARED" >/dev/null)
+  done
 fi
 
-for name in $CONSUMERS; do
-  case "$name" in
-    frontend|mobile) ;;
-    *) continue ;;
-  esac
-
-  wt="$WORKTREE_ROOT/nicoflow-$name"
-  echo "  [$name] install"
-  (cd "$wt" && pnpm install --silent)
-
-  if [ -d "$SHARED_WT" ]; then
-    echo "  [$name] link -> $SHARED_WT"
-    # pnpm link writes to node_modules only; package.json is untouched, so the
-    # link can never be committed by accident.
-    (cd "$wt" && pnpm link "$SHARED_WT" >/dev/null)
-  fi
-done
-
-# ---------------------------------------------------------------- env
-# Codegen reads the API's swagger.json. When the api is in scope its worktree is
-# the right source; when it is not, the contract is whatever the main checkout
-# currently holds.
-if [ -d "$API_WT" ]; then
-  API_FOR_CODEGEN="$API_WT"
-else
-  API_FOR_CODEGEN="$ROOT/nicoflow-api"
-fi
-
-ENV_FILE="$WORKTREE_ROOT/.env"
-cat > "$ENV_FILE" <<EOF
+cat > "$ROOT/nicoflow-shared/.loop-env" <<EOF
 # sourced by run-loop.sh
 export NICOFLOW_LOOP_ACTIVE=1
 export SLUG=$SLUG
 export SPEC_DIR=$SPEC_DIR
-export NICOFLOW_API_PATH=$API_FOR_CODEGEN
-export WORKTREE_ROOT=$WORKTREE_ROOT
+export NICOFLOW_API_PATH=$ROOT/nicoflow-api
 EOF
 
-# ---------------------------------------------------------------- task files
-for name in $CONSUMERS; do
-  wt="$WORKTREE_ROOT/nicoflow-$name"
-  mkdir -p "$wt/specs/$SLUG"
-  for f in tasks progress blockers; do
-    [ -f "$wt/specs/$SLUG/$f.md" ] || : > "$wt/specs/$SLUG/$f.md"
-  done
-done
-
 echo
-echo "ready. next:"
-echo "  1. write specs/$SLUG/tasks.md in each consumer (planner pass)"
-echo "  2. review them — this is the last human gate before autonomy"
-echo "  3. ./scripts/run-loop.sh $SLUG <repo>"
+echo "ready. every repo is on feature/$SLUG, and the spec and tasks are visible"
+echo "in each repo at specs/$SLUG/."
+echo
+echo "  1. review specs/$SLUG/tasks.md and the acceptance criteria in spec.md"
+echo "  2. ./scripts/run-loop.sh $SLUG <repo>"
