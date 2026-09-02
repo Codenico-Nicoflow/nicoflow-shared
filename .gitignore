@@ -3,9 +3,3 @@ dist/
 coverage/
 *.tsbuildinfo
 .DS_Store
-
-# Agent worktrees. These live at the umbrella root, outside every repo — a
-# worktree nested inside a JS repo ships its own node_modules (including a
-# second React), and the test runner resolves both.
-.worktrees/
-.claude/
