@@ -116,21 +116,28 @@ for name in $CONSUMERS; do
   fi
 done
 
-# ---------------------------------------------------------------- linking
-# The inner loop must see local @nicoflow/shared edits immediately; publishing
-# per iteration would cost minutes and spray versions. The exit gate re-checks
-# against the published package, which is what catches a broken export map.
-if echo "$CONSUMERS" | grep -qw shared; then
-  echo
-  echo "  [shared] build"
-  (cd "$SHARED" && pnpm install --silent && pnpm build >/dev/null)
+# Deliberately NOT linking the consumers to the shared checkout.
+#
+# `pnpm link` writes a "link:../nicoflow-shared" override into package.json — it
+# does not only touch node_modules — and committing that would break every other
+# checkout and CI. A raw symlink is worse: it drags in shared's node_modules,
+# giving the consumer a second copy of zod, react and react-redux. Those are
+# peerDependencies precisely so the app supplies one instance; two make
+# zodResolver reject its own schemas and the app stops type-checking on code
+# nobody touched.
+#
+# The consumers install @nicoflow/shared from npm like any other dependency.
 
-  for name in $CONSUMERS; do
-    case "$name" in frontend|mobile) ;; *) continue ;; esac
-    echo "  [$name] link -> nicoflow-shared"
-    (cd "$ROOT/nicoflow-$name" && pnpm link "$SHARED" >/dev/null)
+# The loop's working memory. Context is fresh every iteration, so these files
+# are the only thing carrying state between them: what was already tried, and
+# what it is stuck on.
+for name in $CONSUMERS; do
+  state="$ROOT/nicoflow-$name/specs/$SLUG"
+  [ -d "$state" ] || continue
+  for f in progress blockers; do
+    [ -f "$state/$f.md" ] || : > "$state/$f.md"
   done
-fi
+done
 
 cat > "$ROOT/nicoflow-shared/.loop-env" <<EOF
 # sourced by run-loop.sh
