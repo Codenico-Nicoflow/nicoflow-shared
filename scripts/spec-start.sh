@@ -108,8 +108,29 @@ for name in $CONSUMERS; do
   branch="feature/$SLUG"
 
   if git -C "$repo" show-ref --verify --quiet "refs/heads/$branch"; then
-    echo "  [$name] checkout existing $branch"
-    git -C "$repo" checkout "$branch" --quiet
+    # A branch left over from an earlier attempt can be arbitrarily far behind,
+    # and the loop reads its task list — so a stale one sends it to work from
+    # instructions that were revised or withdrawn. That cost a real iteration:
+    # the loop blocked on a codegen pipeline the base branch had already dropped.
+    behind=$(git -C "$repo" rev-list --count "$branch..origin/$base" 2>/dev/null || echo 0)
+    if [ "${behind:-0}" -gt 0 ]; then
+      ahead=$(git -C "$repo" rev-list --count "origin/$base..$branch" 2>/dev/null || echo 0)
+      if [ "${ahead:-0}" -eq 0 ]; then
+        echo "  [$name] $branch was $behind behind origin/$base with no work on it — recreating"
+        git -C "$repo" checkout --detach --quiet "$branch"
+        git -C "$repo" branch -f "$branch" "origin/$base" --quiet 2>/dev/null \
+          || git -C "$repo" branch -f "$branch" "origin/$base"
+        git -C "$repo" checkout "$branch" --quiet
+      else
+        echo "spec-start: nicoflow-$name's $branch is $behind behind origin/$base and has $ahead commit(s) of its own." >&2
+        echo "  The loop would read a stale task list. Rebase it, or move the work aside:" >&2
+        echo "    git -C $repo branch -m $branch $branch-wip" >&2
+        exit 1
+      fi
+    else
+      echo "  [$name] checkout existing $branch"
+      git -C "$repo" checkout "$branch" --quiet
+    fi
   else
     echo "  [$name] branch $branch from origin/$base"
     git -C "$repo" checkout -b "$branch" "origin/$base" --quiet
