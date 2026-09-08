@@ -37,8 +37,23 @@ export interface AIUsageView {
   month: string | null;
 }
 
-// The set of tool names the AI can propose.
-export type AIToolName = 'complete_task' | 'reschedule_task' | 'create_task';
+// The set of tool names the AI can propose. Extended by NIC-1998 with the
+// recurrence/note/area/project/subtask/bucket write tools.
+export type AIToolName =
+  | 'complete_task'
+  | 'reschedule_task'
+  | 'create_task'
+  | 'setup_recurring_task'
+  | 'adjust_recurring_task'
+  | 'pause_recurring_task'
+  | 'end_recurring_series'
+  | 'create_note'
+  | 'create_area'
+  | 'create_project'
+  | 'update_project'
+  | 'add_subtask'
+  | 'complete_subtask'
+  | 'process_bucket_item';
 
 // A pending tool proposal returned by GET /ai/sessions/:id/tool-calls?status=pending
 // (for rehydrating proposals after a page reload). `id` is the DB row's primary
@@ -84,3 +99,35 @@ export type GetSessionMessagesRequest = {
   sessionId: string;
   seedCursor: string;
 };
+
+// Streaming send-message events (POST /ai/sessions/:id/messages, SSE over POST —
+// NIC-1684). Each SSE frame is a `data: <json>` line; exactly one terminal event
+// (done | error | tool_proposal) closes a stream. Shapes mirror the backend sink
+// 1:1 — do NOT add fields the wire doesn't send.
+export interface AIStreamDelta {
+  type: 'delta';
+  text: string;
+}
+
+export interface AIStreamDone {
+  type: 'done';
+  messageId: string;
+  usage: AIUsageView;
+}
+
+export interface AIStreamError {
+  type: 'error';
+  code: string;
+}
+
+// Sent when Claude wants to perform a write action but has NOT executed it.
+// The stream ends after this frame — no `done` follows in the same turn.
+export interface AIStreamToolProposal {
+  type: 'tool_proposal';
+  toolUseId: string;
+  toolName: AIToolName;
+  input: unknown;
+  assistantMessageId: string;
+}
+
+export type AIStreamEvent = AIStreamDelta | AIStreamDone | AIStreamError | AIStreamToolProposal;
