@@ -1,3 +1,5 @@
+export type { AIErrorCode, QuotaState, QuotaStatus } from './aiQuota';
+export { AI_ERROR_CODE, applyServerBlock, deriveQuota, isFeatureDisabled, isQuotaBlocked } from './aiQuota';
 export { formatBytes } from './formatBytes';
 export type {
   RecurrenceSummary,
@@ -6,6 +8,7 @@ export type {
   SummarizableRule,
 } from './recurrence';
 export { normalizeScheduleForFreq, summarizeRecurrence, validateRecurrence } from './recurrence';
+export { SSEParser } from './sseParser';
 export type { EnergyOption, GentleDateResult, PriorityKind } from './taskDisplay';
 export {
   DEFAULT_ENERGY,
