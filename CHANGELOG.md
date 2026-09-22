@@ -1,5 +1,12 @@
 # @nicoflow/shared
 
+## 0.13.0
+
+### Minor Changes
+
+- 775f1f8: Add `getNotificationsPaged`, an infinite-query twin of `getNotifications` for full-screen notification lists that page forward. Tag invalidation refetches every page currently held, so a delete or mark-all-read rewrites the whole accumulated list instead of leaving a stale row behind a fresh first page. `getNotifications` is unchanged — the web popover wants exactly one page.
+- 6bd4a1c: Add `projectId` to `UpdateRecurrenceRuleRequest` so a recurring series can be moved between projects. Without it a move relocated only the current occurrence and every future one kept materializing into the original project.
+
 ## 0.12.0
 
 ### Minor Changes
