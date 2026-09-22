@@ -153,6 +153,7 @@ export type {
   GetPreferencesResponse,
   MarkReadRequest,
   MarkReadResponse,
+  NotificationListFilter,
   PushSubscribeRequest,
   PushUnsubscribeRequest,
   UnreadCountResponse,
