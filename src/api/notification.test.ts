@@ -39,6 +39,76 @@ const makeStore = () => {
 };
 
 describe('notificationApi slice', () => {
+  it('getNotificationsPaged appends each fetched page', async () => {
+    server.use(
+      http.get(`${API}/notifications`, ({ request }) => {
+        const cursor = new URL(request.url).searchParams.get('cursor');
+        return HttpResponse.json({
+          data: cursor
+            ? { items: [makeNotification({ id: 'n2' })], nextCursor: '' }
+            : { items: [makeNotification({ id: 'n1' })], nextCursor: 'cur' },
+          error: null,
+        });
+      })
+    );
+
+    const { store, notificationApi } = makeStore();
+    await store.dispatch(notificationApi.endpoints.getNotificationsPaged.initiate({ limit: 30 }));
+    const res = await store.dispatch(
+      notificationApi.endpoints.getNotificationsPaged.initiate({ limit: 30 }, { direction: 'forward' })
+    );
+
+    expect(res.data?.pages.flatMap(page => page.items.map(item => item.id))).toEqual(['n1', 'n2']);
+  });
+
+  it('getNotificationsPaged stops paging when the cursor comes back empty', async () => {
+    server.use(
+      http.get(`${API}/notifications`, () =>
+        HttpResponse.json({ data: { items: [makeNotification()], nextCursor: '' }, error: null })
+      )
+    );
+
+    const { store, notificationApi } = makeStore();
+    const res = await store.dispatch(notificationApi.endpoints.getNotificationsPaged.initiate({ limit: 30 }));
+
+    expect(res.data?.pages).toHaveLength(1);
+    expect(res.data?.pageParams).toEqual([undefined]);
+  });
+
+  it('getNotificationsPaged rewrites every loaded page when the tag is invalidated', async () => {
+    // A delete removes n9 from the first page. Both pages are refetched, so the
+    // stale row cannot survive behind a fresh first page.
+    let firstPage = [makeNotification({ id: 'n1' }), makeNotification({ id: 'n9' })];
+    server.use(
+      http.get(`${API}/notifications`, ({ request }) => {
+        const cursor = new URL(request.url).searchParams.get('cursor');
+        return HttpResponse.json({
+          data: cursor
+            ? { items: [makeNotification({ id: 'n2' })], nextCursor: '' }
+            : { items: firstPage, nextCursor: 'cur' },
+          error: null,
+        });
+      })
+    );
+
+    const { store, notificationApi } = makeStore();
+    const sub = store.dispatch(
+      notificationApi.endpoints.getNotificationsPaged.initiate({ limit: 30 }, { subscribe: true })
+    );
+    await sub;
+    await store.dispatch(
+      notificationApi.endpoints.getNotificationsPaged.initiate({ limit: 30 }, { direction: 'forward' })
+    );
+
+    firstPage = [makeNotification({ id: 'n1' })];
+    store.dispatch(notificationApi.util.invalidateTags(['Notification']));
+    await new Promise(resolve => setTimeout(resolve, 50));
+
+    const entry = notificationApi.endpoints.getNotificationsPaged.select({ limit: 30 })(store.getState());
+    expect(entry.data?.pages.flatMap(page => page.items.map(item => item.id))).toEqual(['n1', 'n2']);
+    sub.unsubscribe();
+  });
+
   it('getNotifications unwraps the { items, nextCursor } envelope', async () => {
     server.use(
       http.get(`${API}/notifications`, () =>

@@ -8,6 +8,10 @@ export type GetNotificationsRequest = {
   limit?: number;
 };
 
+// The same filter without the cursor: an infinite query owns the cursor itself
+// as its page param, so passing one in the arg would fight it.
+export type NotificationListFilter = Omit<GetNotificationsRequest, 'cursor'>;
+
 export type GetNotificationsResponse = {
   items: INotification[];
   nextCursor: string;

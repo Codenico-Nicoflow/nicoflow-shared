@@ -12,6 +12,7 @@ import type {
   GetPreferencesResponse,
   MarkReadRequest,
   MarkReadResponse,
+  NotificationListFilter,
   PushSubscribeRequest,
   PushUnsubscribeRequest,
   UnreadCountResponse,
@@ -38,6 +39,30 @@ export const createNotificationApi = (baseQuery: ApiBaseQuery) => {
     endpoints: builder => ({
       getNotifications: builder.query<GetNotificationsResponse, GetNotificationsRequest | void>({
         query: (args = {}) => buildListUrl(args ?? {}),
+        transformResponse: (raw: ApiEnvelope<GetNotificationsResponse>) => raw.data,
+        transformErrorResponse: error => error.data,
+        providesTags: ['Notification'],
+      }),
+      // Infinite-scroll twin of getNotifications, for a full-screen list that pages
+      // forward (mobile). It is a separate endpoint rather than a replacement
+      // because the web popover wants exactly one page and the `{ pages }` shape
+      // would only get in its way.
+      //
+      // Tag invalidation refetches every page currently held, so a delete or a
+      // mark-all-read rewrites the whole accumulated list instead of leaving a
+      // stale row behind a fresh first page.
+      getNotificationsPaged: builder.infiniteQuery<
+        GetNotificationsResponse,
+        NotificationListFilter,
+        string | undefined
+      >({
+        infiniteQueryOptions: {
+          initialPageParam: undefined,
+          // An empty nextCursor is the backend's end-of-list marker; returning
+          // undefined is what clears hasNextPage.
+          getNextPageParam: lastPage => lastPage.nextCursor || undefined,
+        },
+        query: ({ queryArg, pageParam }) => buildListUrl({ ...queryArg, cursor: pageParam }),
         transformResponse: (raw: ApiEnvelope<GetNotificationsResponse>) => raw.data,
         transformErrorResponse: error => error.data,
         providesTags: ['Notification'],
