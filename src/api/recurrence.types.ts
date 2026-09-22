@@ -47,6 +47,10 @@ export type ConvertToRecurringRequest = RecurrenceSchedule & {
 // nullable rather than merely absent.
 export type UpdateRecurrenceRuleRequest = Partial<Omit<RecurrenceSchedule, 'byWeekday'>> & {
   id: string;
+  // Moves the whole series. The rule stamps its project onto every occurrence it
+  // materializes, so without this a move relocates only the current occurrence
+  // and future ones keep landing in the old project.
+  projectId?: string;
   title?: string;
   notes?: string | null;
   priority?: string;
